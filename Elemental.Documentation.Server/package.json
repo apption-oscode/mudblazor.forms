@@ -1,0 +1,16 @@
+{
+  "name": "elemental.theme",
+  "version": "1.0.0",
+  "description": "Elemental Theme SCSS Scripts",
+  "main": "index.js",
+  "private": "true",
+  "devDependencies": {
+    "sass": "^1.37.2"
+  },
+  "scripts": {
+    "watch-scss": "sass Styles/elemental-docs.scss:wwwroot/css/elemental-docs.css --watch",
+    "build-css": "sass Styles/elemental-docs.scss:wwwroot/css/elemental-docs.css && sass --style=compressed Styles/elemental-docs.scss:wwwroot/css/elemental-docs.min.css"
+  },
+  "author": "Apption",
+  "license": "Apache-2.0"
+}

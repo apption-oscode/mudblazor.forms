@@ -1,0 +1,60 @@
+﻿@typeparam T
+@namespace MudBlazor.Forms
+
+
+
+    <MudFormLabel PropertyInfo="@PropertyInfo" Instance="@Instance" />
+
+
+    <MudDatePicker Label="GetLabel()" Editable="true" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" />
+
+@if (MudModelFormTools.IsNullable(PropertyInfo))
+{
+    <div class="errortext">
+        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime?>(Instance,PropertyInfo))" />
+    </div>
+}
+else
+{
+    <div class="errortext">
+        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime>(Instance,PropertyInfo))" />
+    </div>    
+}
+
+
+@code {
+
+    [Parameter]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+
+    /// <summary>
+    /// There are two major layout options. Standard has line based with label / field and compact has a tabular layout with CSS flex.
+    /// </summary>
+    [Parameter] public ModelFormStyle ModelFormStyle { get; set; }
+
+    [Parameter]
+    public T Instance { get; set; }
+
+    /// <summary>
+    /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
+    /// </summary>
+    [CascadingParameter(Name= "LabelForPropertyFunc")]
+    public Func<string,string> LabelForPropertyFunc { get; set; } = null;
+
+    private string GetLabel()
+    {
+        return MudModelFormTools.GetLabel(PropertyInfo,LabelForPropertyFunc, false);
+    }
+
+    public DateTime? PropertyValue
+    {
+        get => MudModelFormTools.AsNullableValue<DateTime>(PropertyInfo,Instance);
+        set
+        {
+            PropertyInfo.SetValue(Instance, value);
+        }
+    }
+
+    private string GetID() => PropertyInfo.Name;
+
+}

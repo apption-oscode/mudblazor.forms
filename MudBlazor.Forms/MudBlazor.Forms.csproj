@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageId>MudBlazor.Forms</PackageId>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+		<Authors>Apption</Authors>
+		<Company>Apption</Company>
+		<Product>MudBlazor Model Form</Product>
+		<Description>Object form editor for MudBlazor</Description>
+		<Copyright>Copyright Apption 2022</Copyright>
+		<PackageProjectUrl>https://github.com/apption-oscode/elemental-blazor</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/apption-oscode/elemental-blazor</RepositoryUrl>
+		<PackageTags>c# blazor</PackageTags>
+		<RepositoryType>Git</RepositoryType>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageIcon>Elemental_128x128.png</PackageIcon>
+		<PackageIconFullPath>$(MSBuildThisFileDirectory)Elemental_128x128.png</PackageIconFullPath>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="6.0.12" />
+    <PackageReference Include="FluentValidation" Version="10.4.0" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Elemental_128x128.png">
+      <PackagePath>\</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
+</Project>

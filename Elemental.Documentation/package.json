@@ -1,0 +1,24 @@
+{
+  "name": "elemental.theme",
+  "version": "1.0.0",
+  "description": "Elemental Theme SCSS Scripts",
+  "main": "index.js",
+  "private": "true",
+  "devDependencies": {
+    "sass": "^1.52.3"
+  },
+  "scripts": {
+    "watch-scss": "sass Styles/elemental-docs.scss:wwwroot/css/elemental-docs.css --watch",
+    "build-css": "sass Styles/elemental-docs.scss:wwwroot/css/elemental-docs.css && sass --style=compressed Styles/elemental-docs.scss:wwwroot/css/elemental-docs.min.css"
+  },
+  "author": "Apption",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-cached": "^1.1.1",
+    "gulp-clean-dest": "^0.2.0",
+    "gulp-flatten": "^0.4.0",
+    "highlight.js": "^11.4.0",
+    "shepherd.js": "^9.0.0"
+  }
+}

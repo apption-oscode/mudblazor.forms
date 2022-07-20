@@ -1,0 +1,11 @@
+<Router AppAssembly="@typeof(MudForms.Documentation.Wasm.Program).Assembly" 
+AdditionalAssemblies="new[] { typeof(MudForms.Documentation.DocumentationTools).Assembly}" PreferExactMatches="@true">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MudForms.Documentation.Shared.MainLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(MudForms.Documentation.Shared.MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
