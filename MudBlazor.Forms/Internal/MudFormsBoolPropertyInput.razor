@@ -2,16 +2,16 @@
 @namespace MudBlazor.Forms
 @using Microsoft.AspNetCore.Components.Forms
 
-    
-        <MudCheckBox @bind-Checked="PropertyValue" Label="@GetLabel()"></MudCheckBox>
-    <div class="errortext">
+<MudField Label="@GetLabel()">
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
-    <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
-} else {
-    <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))" />
+    <MudCheckBox T=bool? TriState="true" @bind-Checked="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
 }
-    </div>
+else
+{
+    <MudCheckBox T=bool @bind-Checked="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))"/>
+}
+</MudField>
 
 @code {
 
@@ -52,6 +52,35 @@
 
     [Parameter]
     public T Instance { get; set; }
+
+    public bool? PropertyValueNullable
+    {
+        get
+        {
+            return MudModelFormTools.AsNullableValue<bool>(PropertyInfo, Instance);
+        }
+        set
+        {
+            var isNull = PropertyInfo.GetValue(Instance) is null;
+            if (isNull)
+            {
+                if (value != null)
+                {
+                    PropertyInfo.SetValue(Instance, value);
+                    valueChangedCallback.InvokeAsync(value);
+                }
+            }
+            else
+            {
+                var currentValue = Convert.ToBoolean(PropertyInfo.GetValue(Instance));
+                if (value != currentValue)
+                {
+                    PropertyInfo.SetValue(Instance, value);
+                    valueChangedCallback.InvokeAsync(value);
+                }
+            }
+        }
+    }
 
     public bool PropertyValue
     {

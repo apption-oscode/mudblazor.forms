@@ -2,11 +2,7 @@
 @using System.ComponentModel.DataAnnotations
 @namespace MudBlazor.Forms
 
-<MudFormLabel PropertyInfo="@PropertyInfo" Instance="@Instance" />
-
-<div class="ae input disabled">
-    @GetFormattedValue()
-</div>
+<MudField Label="@GetLabel()" Variant="Variant.Text">@GetFormattedValue()</MudField>
 
 @code {
 

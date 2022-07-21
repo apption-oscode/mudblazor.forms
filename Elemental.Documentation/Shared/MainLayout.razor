@@ -9,22 +9,36 @@
 <MudThemeProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
-<AeLayout Links="_navLinks">
-    <Brand>
-        <AeFlex>
-            <img src="/_content/MudForms.Documentation/img/Elemental_128x128.png" style="max-height: 50px; padding-right:4px;" />
-            <AeTypography Variant="h2" style="text-align: center; padding: 0rem 0rem 0rem; margin: auto;">elemental</AeTypography>
-        </AeFlex>
-    </Brand>
-    <Body>
-        <AeTypography Variant="h1" style="text-align: center;">Elemental</AeTypography>
-        <AeFlex Vertical style="width: 840px; padding: 0rem 2rem 5rem; margin: auto;">
-            @Body
-        </AeFlex>
-    </Body>
-</AeLayout>
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <img src="/_content/MudForms.Documentation/img/Elemental_128x128.png" style="max-height: 50px; padding-right:4px;" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Mud.ModelForm</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+            <MudNavMenu>
+        @foreach (var l in _navLinks)
+        {
+                <MudNavLink Href="@l.To">@l.Label</MudNavLink>
+        }
+            </MudNavMenu>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
 @code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+    
 
     private List<AeNavLink> _navLinks = new List<AeNavLink>
     {

@@ -2,13 +2,10 @@
 @using Microsoft.AspNetCore.Components.Forms
 @namespace MudBlazor.Forms
 
-<MudFormLabel PropertyInfo="@PropertyInfo" Instance="@Instance" />
-
-<Microsoft.AspNetCore.Components.Forms.InputNumber class="ae input" @bind-Value="PropertyValue" DisplayName="GetLabel()" @onblur="UpdateModel" />
-
-<div class="errortext">
-    <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<T>(Instance,PropertyInfo))" />
-</div>
+<MudNumericField T=T @bind-Value="PropertyValue" 
+        Label="@GetLabel()" Variant="Variant.Text"
+        For="@(MudModelFormTools.GetExpression<T>(Instance,PropertyInfo))"
+        />
 
 
 @code {

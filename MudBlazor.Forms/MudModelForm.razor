@@ -91,7 +91,7 @@
                                     @if (IsSectionLocksVisible)
                                     {
                                         <MudPaper>
-                                            <MudFormsCheckbox IsChecked="isCategoryLocked" IsCheckedChanged="(async (isCheck) => await onCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon"/> <MudText Variant="p" class="no-margin">@localize("Lock Section") </MudText>
+                                            <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async (isCheck) => await onCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@localize("Lock Section") </MudCheckBox>
                                         </MudPaper>
                                     }
                                 </MudText>
@@ -193,7 +193,9 @@
                     }
                 }
             </div>
-            <ValidationSummary class="errortext"/>
+            <MudText Color="@Color.Error">
+                <ValidationSummary />
+            </MudText>
             <div class="ae flex  ">
 
                 <button id="submit" disabled="@(!IsSubmitEnabled)" class=@_submitButtonClass style="margin-left: 4px; margin-bottom: 8px" type="submit">@localize(SubmitLabel)</button>
