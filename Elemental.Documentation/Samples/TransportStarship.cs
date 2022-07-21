@@ -1,4 +1,4 @@
-﻿using Elemental.Components;
+﻿using MudBlazor.Forms;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,38 +12,38 @@ namespace MudForms.Documentation.Data
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        [AeLabel(placeholder:"Starship identifier...")]
+        [MudFormLabel(placeholder:"Starship identifier...")]
         [AeFormCategory("Identification",1)]
         public string Identifier { get; set; }
 
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
-        [AeLabel(placeholder: "Enter Email...")]
+        [MudFormLabel(placeholder: "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
-        [AeLabel(size:50,placeholder:"Describe your starship including crew size")]
+        [MudFormLabel(size:50,placeholder:"Describe your starship including crew size")]
         [AeFormCategory("Details", CategoryOrder = 2)]
         public string Description { get; set; }
 
         [Required]
-        [AeLabel(validValues:new[] { "Class1Fighter", "Class1Discovery"})]
+        [MudFormLabel(validValues:new[] { "Class1Fighter", "Class1Discovery"})]
         [AeFormCategory("Details", CategoryOrder = 2)]
         public string Classification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
         [AeFormCategory("Details", CategoryOrder = 2)]
-        [AeLabel(label: "Maximum Accomodation")]
+        [MudFormLabel(label: "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
         [AeFormCategory("Details", CategoryOrder = 2)]
-        [AeLabel("Validated Design")]
+        [MudFormLabel("Validated Design")]
         public bool IsValidatedDesign { get; set; }
 
         [Required]
-        [AeLabel("Production Date")]
+        [MudFormLabel("Production Date")]
         [AeFormCategory("Details", CategoryOrder = 2)]
         [DisplayFormat(DataFormatString ="d")]
         public DateTime ProductionDate { get; set; }

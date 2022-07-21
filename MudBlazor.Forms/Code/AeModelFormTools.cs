@@ -52,7 +52,7 @@ namespace MudBlazor.Forms
 
         public static string[] DropdownValues(this PropertyInfo propertyInfo)
         {
-            return (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute)?.ValidValues;
+            return (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.ValidValues;
         }
 
         public static bool IsNullable(Type type)
@@ -105,29 +105,29 @@ namespace MudBlazor.Forms
 
         public static int? GetSize(PropertyInfo propertyInfo)
         {
-            return AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).InputLength
+            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).InputLength
                 : null;
         }
 
         public static string GetPlaceHolder(PropertyInfo propertyInfo)
         {
-            return AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).PlaceHolder
+            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).PlaceHolder
                 : null;
         }
 
         public static bool IsPasswordField(PropertyInfo propertyInfo)
         {
-            return AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).IsPasswordField
+            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).IsPasswordField
                 : false;
         }
 
         public static string GetLabel(PropertyInfo propertyInfo, Func<string, string> labelFunc, bool includeOptional = true)
         {
-            var label = AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).Label
+            var label = MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).Label
                 : null;
             if (label is null)
             {
@@ -175,12 +175,12 @@ namespace MudBlazor.Forms
 
         private static int GetRow(PropertyInfo p)
         {
-            return int.TryParse((AeLabelAttribute.GetCustomAttribute(p, typeof(AeLabelAttribute)) as AeLabelAttribute)?.Row, out var result) ? result : 0;
+            return int.TryParse((MudFormLabelAttribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Row, out var result) ? result : 0;
         }
 
         private static int GetColumn(PropertyInfo p)
         {
-            return int.TryParse((AeLabelAttribute.GetCustomAttribute(p, typeof(AeLabelAttribute)) as AeLabelAttribute)?.Column, out var result) ? result : 0;
+            return int.TryParse((MudFormLabelAttribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Column, out var result) ? result : 0;
         }
 
         public static string Labelize(string propName)

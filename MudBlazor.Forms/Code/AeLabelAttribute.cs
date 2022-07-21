@@ -2,7 +2,7 @@
 
 namespace MudBlazor.Forms
 {
-    public class AeLabelAttribute : Attribute
+    public class MudFormLabelAttribute : Attribute
     {
         private readonly string _label;
 
@@ -16,7 +16,7 @@ namespace MudBlazor.Forms
         private readonly string _row;
         private readonly string _column;
 
-        public AeLabelAttribute(string label = null, string placeholder = null, int order = 0, int size = 0, string[] validValues = null, bool isDropDown = false, string row = null, string column = null, bool isPasswordField = false)
+        public MudFormLabelAttribute(string label = null, string placeholder = null, int order = 0, int size = 0, string[] validValues = null, bool isDropDown = false, string row = null, string column = null, bool isPasswordField = false)
         {
             _label = label;
             _order = order;

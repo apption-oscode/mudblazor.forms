@@ -173,11 +173,11 @@ namespace MudBlazor.Forms
 
         public bool IsDropDown(PropertyInfo propertyInfo)
         {
-            var hasValidValues = AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).ValidValues?.Length > 0
+            var hasValidValues = MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).ValidValues?.Length > 0
                 : optionProperties.ContainsKey(propertyInfo);
-            var hasDropDown = AeLabelAttribute.IsDefined(propertyInfo, typeof(AeLabelAttribute))
-                ? (AeLabelAttribute.GetCustomAttribute(propertyInfo, typeof(AeLabelAttribute)) as AeLabelAttribute).IsDropDown
+            var hasDropDown = MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).IsDropDown
                 : false;
             return hasValidValues || hasDropDown;
         }

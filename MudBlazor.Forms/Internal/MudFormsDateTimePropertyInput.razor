@@ -1,12 +1,7 @@
 ﻿@typeparam T
 @namespace MudBlazor.Forms
 
-
-
-    <MudFormLabel PropertyInfo="@PropertyInfo" Instance="@Instance" />
-
-
-    <MudDatePicker Label="GetLabel()" Editable="true" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" />
+    <MudDatePicker Label="@GetLabel()" Editable="true" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" />
 
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {

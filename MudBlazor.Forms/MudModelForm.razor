@@ -62,7 +62,7 @@
                 <DataAnnotationsValidator/>
             }
 
-            <div class="ae modelform-rows @_rowsClass">
+            <div class="ae modelform-rows">
                 @foreach (var category in ModelFormContext.GetCategories())
                 {
                     var isCategoryLocked = ModelFormContext.IsCategoryLocked(category.category);
@@ -101,7 +101,7 @@
                     </div>
                     @foreach (var props in category.properties)
                     {
-                        <div class="ae modelform-row @RowColor">
+                        <div class="ae modelform-row">
                             @foreach (var prop in props)
                             {
                                 var isBool = GetNonNullableType(prop) == typeof(bool);

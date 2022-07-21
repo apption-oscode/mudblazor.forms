@@ -5,33 +5,34 @@
 @using System.Reflection
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.Extensions.Logging
+@using System.Collections.Immutable
 @inject ILogger<MudFormsDropdownPropertyInput<T>> logger
-<MudFormLabel PropertyInfo="@PropertyInfo" ShowOptional="false" Instance="@Instance" />
 
 @if (ValidDisplayValues != null)
 {
-    <MudSelect T="int" Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex">
+    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex">
         @if (!MudModelFormTools.IsRequired(PropertyInfo))
-            {
-                <MudSelectItem Value="@NO_VALUE">@localize(GetPlaceholder())</MudSelectItem>
-            }
-        @for (int il = 0; il < ValidDisplayValues.Count; il++)
-            {
-            <MudSelectItem Value="@il">@(localize(ValidDisplayValues[il]))</MudSelectItem>
-            }        
+        {
+            <MudSelectItem @key="@GetKey(NO_VALUE)" Value="@NO_VALUE">@localize(GetPlaceholder())</MudSelectItem>
+        }
+        @for (int jl = 0; jl < ValidDisplayValues.Count; jl++)
+        {
+            var cidx = jl;
+            <MudSelectItem @key="@GetKey(cidx)" Value="@cidx">@(localize(ValidDisplayValues[cidx]))</MudSelectItem>
+        }        
     </MudSelect>
 }
 else
 {
-    <select class="ae input"><option value="">-</option></select>
-    <MudSelect T="int" Label="Coffee" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex">
+    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex">
         @if (!MudModelFormTools.IsRequired(PropertyInfo))
         {
-            <MudSelectItem Value="@NO_VALUE" Disabled=true>-</MudSelectItem>
+            <MudSelectItem @key="GetKey(NO_VALUE)" Value="@NO_VALUE" Disabled=true>-</MudSelectItem>
         }
         @for (int il = 0; il < ValidDisplayValues.Count; il++)
         {
-            <MudSelectItem Value="@il">@(localize(ValidDisplayValues[il]))</MudSelectItem>
+            var cidx = il;
+            <MudSelectItem @key="GetKey(cidx)" Value="@cidx">@(localize(ValidDisplayValues[cidx]))</MudSelectItem>
         }
     </MudSelect>
 }
@@ -54,9 +55,14 @@ else
 
     public const int NO_VALUE = -1;
 
-    private List<string> ValidDisplayValues { get; set; }
+    private ImmutableList<string> ValidDisplayValues { get; set; }
 
-    private List<object> ActualValues { get; set; }
+    private ImmutableList<object> ActualValues { get; set; }
+
+    private string GetKey(int il)
+    {
+        return PropertyInfo.Name + "_" + il;
+    }
 
     private string GetPlaceholder()
     {
@@ -65,6 +71,11 @@ else
             return "-";
         return label;
     }    
+
+    private string GetLabel()
+    {
+        return MudModelFormTools.GetLabel(PropertyInfo, LabelForPropertyFunc, false);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -91,8 +102,8 @@ else
     private void UpdateOptions()
     {
         var optValues = ModelFormContext.GetOptionValuesForProperty(PropertyInfo);
-        ValidDisplayValues = optValues.labels;
-        ActualValues = optValues.values;
+        ValidDisplayValues = ImmutableList.ToImmutableList(optValues.labels);
+        ActualValues = ImmutableList.ToImmutableList(optValues.values);
         var idx = ActualValues.IndexOf(PropertyInfo.GetValue(Instance));
         if (idx == -1)
             idx = MudModelFormTools.IsRequired(PropertyInfo)?0:NO_VALUE;
