@@ -6,7 +6,6 @@
     You may obtain a copy of the License at
 
         http://www.apache.org/licenses/LICENSE-2.0
-
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,46 +19,22 @@
 @inherits DemoPage
 @using Elemental.Components
 
-<AeFlex Vertical class="home-page-container">
 
-    <AeFlex class="section description">
-        <AeTypography>Build modern, customizable feature rich web experiences in Blazor with minimal code using the Elemental controls.</AeTypography>
-        <AeTypography>Elemental is a Blazor Component Library that aims to provide .NET developers with UI components based on functional &amp; code-first  to their projects.</AeTypography>
-        <AeTypography class="plug">This library is developed and maintained by <AeTypography Variant="a" href="https://www.apption.com">Apption</AeTypography>.</AeTypography>
-    </AeFlex>
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
+    <MudStack Spacing="5">
+        <MudText Align="Align.Center" Typo="Typo.h1">ModelForms</MudText>
+        <MudText Align="Align.Center">Build modern, customizable feature rich web form experiences in Blazor with minimal code using the ModelForm controls.</MudText>
+        <MudText Align="Align.Center">ModelForm is a Blazor Component Library that aims to provide .NET developers with UI form components based on functional &amp; code-first approach to their projects.</MudText>
+        <MudText Align="Align.Center" Typo="Typo.caption">This library is developed and maintained by <MudLink Href="https://www.apption.com">Apption</MudLink>.</MudText>
+    </MudStack>
+    <MudStack Spacing="5" Class="pt-16">
+        <MudText Typo="Typo.h2">Installation</MudText>
+        <MudText>To install with the dotnet CLI you can open your terminal and add the package to your project</MudText>
+        <pre style="margin: 0"><code class="language-shell">$ dotnet add package MudBlazor.ModelForms</code></pre>
+        <MudText>Once you've installed the package to your project you need to add the import to your <code>_Imports.razor</code> file</MudText>
+        <pre style="margin: 0"><code class="language-csharp">@@using Elemental.Components</code></pre>
 
-    <AeFlex class="section">
-        <AeTypography Variant="h2">Introduction</AeTypography>
-        <AeTypography>Learn how to include Elemental in your Blazor Project</AeTypography>
-
-        <AeTypography Variant="h3">Installation</AeTypography>
-        <AeTypography>The best way to add Elemental is to install via the NuGet Package Manager or the dotnet CLI.</AeTypography>
-
-        <AeTypography Variant="h4">dotnet CLI</AeTypography>
-        <AeTypography>To install with the dotnet CLI you can open your terminal and add the package to your project</AeTypography>
-
-        <AeFlex class="code-wrapper">
-            <pre style="margin: 0"><code class="language-shell">$ dotnet add package Apption.Elemental</code></pre>
-        </AeFlex>
-
-        <AeTypography Variant="h4">NuGet Package Manager</AeTypography>
-        <AeTypography>To install with the Package Manager you can search for Apption.Elemental to quickly find the package and install it.</AeTypography>
-        <img id="nuget-install" style="max-width: 600px; padding: .5rem 0" src="_content/MudForms.Documentation/img/home/nuget_install.png" />
-
-        <AeTypography Variant="h3">Imports</AeTypography>
-        <AeTypography>Once you've installed the package to your project you need to add the import to your <code>_Imports.razor</code> file</AeTypography>
-        <AeFlex class="code-wrapper">
-            <pre style="margin: 0"><code class="language-csharp">@@using Elemental.Components</code></pre>
-        </AeFlex>
-        <AeTypography>Then add the minified css to your <code>_Hosts.razor</code> file</AeTypography>
-        <AeFlex class="code-wrapper">
-            <pre style="margin: 0"><code class="language-html">@(@"<link rel=""stylesheet"" href=""_content/Blazor.Elemental/css/elemental.min.css"" />")</code></pre>
-        </AeFlex>
-        <AeTypography>And finally add the following line in your <code>Startup.cs</code> under <code>ConfigureServices</code></AeTypography>
-        <AeFlex class="code-wrapper">
-            <pre style="margin: 0"><code class="language-csharp">services.AddElemental()</code></pre>
-        </AeFlex>
-    </AeFlex>
-
-
-</AeFlex>
+        <MudText>And finally add the following line in your <code>Startup.cs</code> under <code>ConfigureServices</code></MudText>
+        <pre style="margin: 0"><code class="language-csharp">services.AddElemental()</code></pre>
+    </MudStack>
+</MudContainer>
