@@ -12,13 +12,21 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <img src="/_content/MudForms.Documentation/img/Elemental_128x128.png" style="max-height: 50px; padding-right:4px;"/>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
-        <MudText Typo="Typo.h5" Class="ml-3">Mud.ModelForm</MudText>
-        <MudSpacer/>
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
+        @if (!_drawerOpen)
+        {
+            <MudText Typo="Typo.h5">Model Form</MudText>
+        }
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudStack Row>
+                <MudImage Height="48" Src="/_content/MudForms.Documentation/img/Elemental_128x128.png"></MudImage>
+                <MudText Typo="Typo.h5" Class="mt-1">
+                    Model Form
+                </MudText>
+            </MudStack>
+        </MudDrawerHeader>
         <MudNavMenu>
             @foreach (var linkData in _navLinks)
             {
