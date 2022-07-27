@@ -16,40 +16,23 @@
  limitations under the License.
 *@
 
-<AeTable Accessors="accessorFunctions"
-       Dataset="_PropertyInfos"
-       Headers="headers" />
-
+<MudStack Class="my-16">
+    <MudText Typo="Typo.h5">
+        <b>Debug View</b>
+    </MudText>
+    <MudTable Items="@Object.GetType().GetProperties().ToList()" FixedHeader="true">
+        <HeaderContent>
+            <MudTh>Property</MudTh>
+            <MudTh>Value</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Property">@context.Name</MudTd>
+            <MudTd DataLabel="Value">@Convert.ToString(context.GetValue(Object, null) ?? "(null)")</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudStack>
 
 @code {
     [Parameter]
-    public object Object { get; set;}
-
-    // Define the headers at the top of the table
-    private List<string> headers = new List<string>
-    {
-        "Property", "Value"
-    };
-
-    // Typeparam class to hold row data, can be anything
-
-    // Accessor functions to retrieve cell value
-    private List<Func<PropertyInfo, string>> accessorFunctions;
-
-    protected override void OnParametersSet()
-    {
-        _PropertyInfos = Object.GetType().GetProperties().ToList();
-        accessorFunctions = new List<Func<PropertyInfo, string>>
-    {
-        new Func<PropertyInfo, string>(prop => { return prop.Name; }),
-        new Func<PropertyInfo, string>(prop => { return Convert.ToString(prop.GetValue(Object, null) ?? "(null)"); })
-    };
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        OnParametersSet();
-    }
-
-    private List<PropertyInfo> _PropertyInfos = null;
+    public object Object { get; set; }
 }
