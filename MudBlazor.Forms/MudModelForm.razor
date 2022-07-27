@@ -15,14 +15,13 @@
 
 *@
 
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Reflection
 @typeparam T
 @namespace MudBlazor.Forms
 
 @inject ILogger<MudModelForm<T>> Logger
-@using System.Reflection
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.Extensions.Logging
-@using System.ComponentModel.DataAnnotations
 
 @if (Model != null)
 {
@@ -31,12 +30,12 @@
         <MudCard>
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@localize("Form Navigation")</MudText>
+                    <MudText Typo="Typo.h6">@Localize("Form Navigation")</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
                 <MudNavMenu Bordered="true">
-                    @foreach (var anchor in _Anchors)
+                    @foreach (var anchor in _anchors)
                     {
                         <!-- TODO FIX -->
                         <MudNavLink>@anchor.ChildContent</MudNavLink>
@@ -75,9 +74,9 @@
                         @if (EnableOutline)
                         {
                             id = category.category;
-                            if (!_Anchors.Any(a => a.Id == id))
+                            if (_anchors != null && !_anchors.Any(a => a.Id == id))
                             {
-                                _Anchors.Add((id,
+                                _anchors.Add((id,
                                     @<MudText Typo="Typo.button">@id</MudText>
                                     ));
                             }
@@ -85,14 +84,14 @@
 
                         <MudPaper Class="d-flex flex-row flex-grow-1 gap-4" Elevation="0">
                             <MudText Variant="h3" id="@id">
-                                @localize(category.category)
+                                @Localize(category.category)
                                 <label class="ae ae-form-control-label notes">
                                     <MudText>@ModelFormContext.GetCategoryNote(category.category)</MudText>
                                 </label>
                                 @if (IsSectionLocksVisible)
                                 {
                                     <MudPaper>
-                                        <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async (isCheck) => await onCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@localize("Lock Section") </MudCheckBox>
+                                        <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@Localize("Lock Section") </MudCheckBox>
                                     </MudPaper>
                                 }
                             </MudText>
@@ -107,15 +106,12 @@
                     <MudStack Spacing="Spacing">
                         @foreach (var prop in props)
                         {
-                            var isBool = GetNonNullableType(prop) == typeof(bool);
-                            var colClass = $"ae modelform-col {(isBool ? "checkbox-on-the-left" : "")}";
-
-                                        @* TODO: explore single cascading property *@
+                            @* TODO: explore single cascading property *@
                             <CascadingValue Value="@OnChange" Name="OnChangeCallback">
                                 <CascadingValue Value="@LocalizerFunction" Name="LocalizerFunction">
                                     <CascadingValue Value="@ModelFormContext" Name="ModelFormContext">
                                         <CascadingValue Value="@LabelForPropertyFunc" Name="LabelForPropertyFunc">
-                                            <CascadingValue Value="@NotifyArg" Name="Notifier">
+                                            <CascadingValue Value="@_notifyArg" Name="Notifier">
                                                 <CascadingValue Value="@LabelsOnTop" Name="LabelsOnTop">
                                                     <CascadingValue Value="@AreFieldsNullable" Name="AreFieldsNullable">
                                                         @if (IsReadOnly || isCategoryLocked)
@@ -199,10 +195,10 @@
                 <ValidationSummary/>
             </MudText>
             <MudStack Row Class="mt-8">
-                <MudButton Disabled="@(!IsSubmitEnabled)" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@localize(SubmitLabel)</MudButton>
+                <MudButton Disabled="@(!IsSubmitEnabled)" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@Localize(SubmitLabel)</MudButton>
                 @if (!string.IsNullOrWhiteSpace(CancelLabel) && OnCancel != null)
                 {
-                    <MudButton OnClick="ReloadForm">@localize(CancelLabel)</MudButton>
+                    <MudButton OnClick="ReloadForm">@Localize(CancelLabel)</MudButton>
                 }
             </MudStack>
 
@@ -212,10 +208,8 @@
 
 
 @code {
-    private string _rowsClass => $"{(LabelsOnTop ? "top-label" : "left-label")} {(Flexbox ? "flexbox" : "")}";
-    private string _submitButtonClass => IsSubmitEnabled ? $"ae button dark" : $"ae button disabled";
-    private bool isConfigured = false;
-    private EditContext _editContext;
+    private bool _isConfigured = false;
+    private EditContext? _editContext;
 
     [Parameter]
     public bool IsSubmitEnabled { get; set; } = true;
@@ -230,23 +224,23 @@
     {
         if (EnableOutline)
         {
-            _Anchors = new List<(string Id, RenderFragment ChildContent)>
+            _anchors = new List<(string Id, RenderFragment ChildContent)>
             {
-                (@localize("Uncategorized"),
-                    @<MudText Typo="Typo.caption">@localize("Uncategorized Fields")</MudText>
+                (Localize("Uncategorized"),
+                    @<MudText Typo="Typo.caption">@Localize("Uncategorized Fields")</MudText>
                     )
             };
         }
 
         ModelFormContext.Logger = Logger;
-        ModelFormContext.RefreshModel = async () => await this.InvokeAsync(() => this.StateHasChanged());
+        ModelFormContext.RefreshModel = async () => await InvokeAsync(StateHasChanged);
         ModelFormContext.SetProperties(GetProperties());
-        if (!isConfigured)
+        if (!_isConfigured)
         {
             await OnConfigure.InvokeAsync(ModelFormContext);
-            isConfigured = true;
+            _isConfigured = true;
         }
-        NotifyArg = OnNotify;
+        _notifyArg = OnNotify;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -255,15 +249,15 @@
     }
 
     [Parameter]
-    public Func<string, string?> LocalizerFunction { get; set; } = null;
+    public Func<string, string?>? LocalizerFunction { get; set; }
 
-    private string localize(string input)
+    private string Localize(string input)
     {
-        return LocalizerFunction is null ? input : (LocalizerFunction(input) ?? input);
+        return (LocalizerFunction?.Invoke(input) ?? input);
     }
 
-    [Parameter]
-    public T Model { get; set; }
+    [Parameter, EditorRequired]
+    public T? Model { get; set; }
 
     [Parameter]
     public string RowColor { get; set; } = "blue";
@@ -278,24 +272,24 @@
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [Parameter]
-    public string CancelLabel { get; set; } = null;
+    public string? CancelLabel { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     /// <summary>
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [Parameter]
-    public Func<string, string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string, string>? LabelForPropertyFunc { get; set; }
 
-    private Func<ModelFormArgsInternal, Task> NotifyArg;
+    private Func<ModelFormArgsInternal, Task>? _notifyArg;
 
     private async Task ReloadForm()
     {
         _isCancelled = true;
-        Model = await OnCancel();
-        this.StateHasChanged();
+        Model = await OnCancel?.Invoke()!;
+        StateHasChanged();
     }
 
     /// <summary>
@@ -337,7 +331,7 @@
     [Parameter]
     public EventCallback<string> OnCategoryLock { get; set; }
 
-    public ModelFormContext<T> ModelFormContext { get; } = new();
+    private ModelFormContext<T> ModelFormContext { get; } = new();
 
     /// <summary>
     /// This method will be called when a property is changed.
@@ -358,17 +352,17 @@
     public bool EnableOutline { get; set; }
 
     [Parameter]
-    public string OutlineStyle { get; set; }
+    public string? OutlineStyle { get; set; }
 
     [Parameter]
-    public string CheckedIcon { get; set; } = null;
+    public string? CheckedIcon { get; set; }
 
     [Parameter]
-    public string UncheckedIcon { get; set; } = null;
+    public string? UncheckedIcon { get; set; }
 
     private bool _isCancelled = false;
 
-    private List<(string Id, RenderFragment ChildContent)> _Anchors;
+    private List<(string Id, RenderFragment ChildContent)>? _anchors;
 
     private List<PropertyInfo> GetProperties() => typeof(T).GetAeModelProperties();
 
@@ -376,13 +370,13 @@
 
     private MudFormsCustomValidationValidator<T>? _customValidationValidator;
 
-    private async Task onCategoryLock(bool isLocked, string category)
+    private async Task HandleCategoryLock(bool isLocked, string category)
     {
         if (!string.IsNullOrEmpty(category))
         {
             ModelFormContext.RegisterCategoryLock(category, isLocked);
             await OnConfigure.InvokeAsync(ModelFormContext);
-            await InvokeAsync(() => { StateHasChanged(); });
+            await InvokeAsync(StateHasChanged);
         }
     }
 
@@ -390,7 +384,7 @@
     {
         if (_isCancelled)
         {
-            isConfigured = false;
+            _isConfigured = false;
             return;
         }
 
@@ -407,11 +401,11 @@
         }
     }
 
-    public async Task OnNotify(ModelFormArgsInternal iargs)
+    private async Task OnNotify(ModelFormArgsInternal internalArgs)
     {
-        var args = new ModelFormChangeArgs() { Context = ModelFormContext, PropertyInfo = iargs.PropertyInfo, EditContext = iargs.EditContext };
+        var args = new ModelFormChangeArgs { Context = ModelFormContext, PropertyInfo = internalArgs.PropertyInfo, EditContext = internalArgs.EditContext };
         await OnChange.InvokeAsync(args);
-        await InvokeAsync(() => { StateHasChanged(); });
+        await InvokeAsync(StateHasChanged);
     }
 
 }

@@ -12,7 +12,6 @@ namespace MudForms.Documentation.Data
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        // [MudFormLabel(Placeholder ="Starship identifier...")]
         public string Identifier { get; set; }
 
         [Required]
