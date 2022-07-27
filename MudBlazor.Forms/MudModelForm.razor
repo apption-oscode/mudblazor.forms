@@ -33,20 +33,20 @@
                 <CardHeaderContent>
                     <MudText Typo="Typo.h6">@localize("Form Navigation")</MudText>
                 </CardHeaderContent>
-            </MudCardHeader>            
+            </MudCardHeader>
             <MudCardContent>
-                    <MudNavMenu Bordered="true">
-                        @foreach (var anchor in _Anchors)
-                        {
-                            <!-- TODO FIX -->
+                <MudNavMenu Bordered="true">
+                    @foreach (var anchor in _Anchors)
+                    {
+                        <!-- TODO FIX -->
                         <MudNavLink>@anchor.ChildContent</MudNavLink>
-                        }
-                    </MudNavMenu>                
+                    }
+                </MudNavMenu>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
             </MudCardActions>
-        </MudCard>        
+        </MudCard>
     }
     <div id=@(EnableOutline ? "Uncategorized" : "")>
         <EditForm Model="Model" OnSubmit="@OnSubmit">
@@ -62,148 +62,149 @@
                 <DataAnnotationsValidator/>
             }
 
-            <div class="ae modelform-rows">
-                @foreach (var category in ModelFormContext.GetCategories())
-                {
-                    var isCategoryLocked = ModelFormContext.IsCategoryLocked(category.category);
+            @* container categories *@
+            @foreach (var category in ModelFormContext.GetCategories())
+            {
+                var isCategoryLocked = ModelFormContext.IsCategoryLocked(category.category);
 
-                    <div style="display: flex; flex-direction: row">
-                        @if (!string.IsNullOrWhiteSpace(category.category))
-                        {
-                            string id = "";
-                            @if (EnableOutline)
-                            {
-                                id = category.category;
-                                if (!_Anchors.Any(a => a.Id == id))
-                                {
-                                    _Anchors.Add((id,
-                @<MudText Typo="Typo.button">@id</MudText>
-                                        ));
-                                }
-                            }
-
-                            <MudPaper Class="d-flex flex-row flex-grow-1 gap-4" Elevation="0">
-                                <MudText Variant="h3" id="@id">
-                                    @localize(category.category)
-                                    <label class="ae ae-form-control-label notes">
-                                        <MudText>@ModelFormContext.GetCategoryNote(category.category)</MudText>
-                                    </label>
-                                    @if (IsSectionLocksVisible)
-                                    {
-                                        <MudPaper>
-                                            <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async (isCheck) => await onCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@localize("Lock Section") </MudCheckBox>
-                                        </MudPaper>
-                                    }
-                                </MudText>
-
-                            </MudPaper>
-                        }
-                    </div>
-                    @foreach (var props in category.properties)
+                // doing anchor stuff
+                <div style="display: flex; flex-direction: row">
+                    @if (!string.IsNullOrWhiteSpace(category.category))
                     {
-                        <div class="ae modelform-row">
-                            @foreach (var prop in props)
+                        string id = "";
+                        @if (EnableOutline)
+                        {
+                            id = category.category;
+                            if (!_Anchors.Any(a => a.Id == id))
                             {
-                                var isBool = GetNonNullableType(prop) == typeof(bool);
-                                var colClass = $"ae modelform-col {(isBool ? "checkbox-on-the-left" : "")}";
-                                <div class=@colClass>
-                                    <CascadingValue Value="@OnChange" Name="OnChangeCallback">
-                                        <CascadingValue Value="@LocalizerFunction" Name="LocalizerFunction">
-                                            <CascadingValue Value="@ModelFormContext" Name="ModelFormContext">
-                                                <CascadingValue Value="@LabelForPropertyFunc" Name="LabelForPropertyFunc">
-                                                    <CascadingValue Value="@NotifyArg" Name="Notifier">
-                                                        <CascadingValue Value="@LabelsOnTop" Name="LabelsOnTop">
-                                                            <CascadingValue Value="@AreFieldsNullable" Name="AreFieldsNullable">
-                                                                @if (IsReadOnly || isCategoryLocked)
+                                _Anchors.Add((id,
+                                    @<MudText Typo="Typo.button">@id</MudText>
+                                    ));
+                            }
+                        }
+
+                        <MudPaper Class="d-flex flex-row flex-grow-1 gap-4" Elevation="0">
+                            <MudText Variant="h3" id="@id">
+                                @localize(category.category)
+                                <label class="ae ae-form-control-label notes">
+                                    <MudText>@ModelFormContext.GetCategoryNote(category.category)</MudText>
+                                </label>
+                                @if (IsSectionLocksVisible)
+                                {
+                                    <MudPaper>
+                                        <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async (isCheck) => await onCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@localize("Lock Section") </MudCheckBox>
+                                    </MudPaper>
+                                }
+                            </MudText>
+
+                        </MudPaper>
+                    }
+                </div>
+
+                // loop properties
+                @foreach (var props in category.properties)
+                {
+                    <MudStack Spacing="Spacing">
+                        @foreach (var prop in props)
+                        {
+                            var isBool = GetNonNullableType(prop) == typeof(bool);
+                            var colClass = $"ae modelform-col {(isBool ? "checkbox-on-the-left" : "")}";
+
+                                        @* TODO: explore single cascading property *@
+                            <CascadingValue Value="@OnChange" Name="OnChangeCallback">
+                                <CascadingValue Value="@LocalizerFunction" Name="LocalizerFunction">
+                                    <CascadingValue Value="@ModelFormContext" Name="ModelFormContext">
+                                        <CascadingValue Value="@LabelForPropertyFunc" Name="LabelForPropertyFunc">
+                                            <CascadingValue Value="@NotifyArg" Name="Notifier">
+                                                <CascadingValue Value="@LabelsOnTop" Name="LabelsOnTop">
+                                                    <CascadingValue Value="@AreFieldsNullable" Name="AreFieldsNullable">
+                                                        @if (IsReadOnly || isCategoryLocked)
+                                                        {
+                                                            <MudFormsPropertyValueDisplay PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (ModelFormContext.IsDropDown(prop))
+                                                            {
+                                                                <MudFormsDropdownPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (GetNonNullableType(prop) == typeof(string))
                                                                 {
-                                                                    <MudFormsPropertyValueDisplay PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    <MudFormsStringPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle" Editable="prop.IsEditable()"/>
                                                                 }
-                                                                else
+                                                                if (prop.PropertyType == typeof(int))
                                                                 {
-                                                                    if (ModelFormContext.IsDropDown(prop))
-                                                                    {
-                                                                        <MudFormsDropdownPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        if (GetNonNullableType(prop) == typeof(string))
-                                                                        {
-                                                                            <MudFormsStringPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle" Editable="prop.IsEditable()"/>
-                                                                        }
-                                                                        if (prop.PropertyType == typeof(int))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=int PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        if (prop.PropertyType == typeof(long))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=long PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        if (prop.PropertyType == typeof(float))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=float PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        if (prop.PropertyType == typeof(double))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=double PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(Decimal))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=Decimal PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(int?))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=int? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(long?))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=long? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(float?))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=float? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(double?))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=double? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (prop.PropertyType == typeof(Decimal?))
-                                                                        {
-                                                                            <MudFormsNumberPropertyInput T=Decimal? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (GetNonNullableType(prop) == typeof(bool))
-                                                                        {
-                                                                            <MudFormsBoolPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                        @if (GetNonNullableType(prop) == typeof(DateTime))
-                                                                        {
-                                                                            <MudFormsDateTimePropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                        }
-                                                                    }
+                                                                    <MudFormsNumberPropertyInput T=int PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
                                                                 }
-                                                            </CascadingValue>
-                                                        </CascadingValue>
+                                                                if (prop.PropertyType == typeof(long))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=long PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                if (prop.PropertyType == typeof(float))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=float PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                if (prop.PropertyType == typeof(double))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=double PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(Decimal))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=Decimal PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(int?))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=int? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(long?))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=long? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(float?))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=float? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(double?))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=double? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (prop.PropertyType == typeof(Decimal?))
+                                                                {
+                                                                    <MudFormsNumberPropertyInput T=Decimal? PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (GetNonNullableType(prop) == typeof(bool))
+                                                                {
+                                                                    <MudFormsBoolPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                                @if (GetNonNullableType(prop) == typeof(DateTime))
+                                                                {
+                                                                    <MudFormsDateTimePropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                }
+                                                            }
+                                                        }
                                                     </CascadingValue>
                                                 </CascadingValue>
                                             </CascadingValue>
                                         </CascadingValue>
                                     </CascadingValue>
-                                </div>
-                            }
-                        </div>
-                    }
+                                </CascadingValue>
+                            </CascadingValue>
+                        }
+                    </MudStack>
                 }
-            </div>
+            }
             <MudText Color="@Color.Error">
-                <ValidationSummary />
+                <ValidationSummary/>
             </MudText>
-            <div class="ae flex  ">
-
-                <button id="submit" disabled="@(!IsSubmitEnabled)" class=@_submitButtonClass style="margin-left: 4px; margin-bottom: 8px" type="submit">@localize(SubmitLabel)</button>
+            <MudStack Row Class="mt-8">
+                <MudButton Disabled="@(!IsSubmitEnabled)" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@localize(SubmitLabel)</MudButton>
                 @if (!string.IsNullOrWhiteSpace(CancelLabel) && OnCancel != null)
                 {
-                    <button id="cancel" class="ae button dark" style="margin-left: 4px; margin-bottom: 8px" @onclick="ReloadForm">@localize(CancelLabel)</button>
+                    <MudButton OnClick="ReloadForm">@localize(CancelLabel)</MudButton>
                 }
-            </div>
+            </MudStack>
 
         </EditForm>
     </div>
@@ -222,6 +223,9 @@
     [Parameter]
     public bool IsSectionLocksVisible { get; set; }
 
+    [Parameter]
+    public int Spacing { get; set; } = 3;
+
     protected override async Task OnInitializedAsync()
     {
         if (EnableOutline)
@@ -229,7 +233,7 @@
             _Anchors = new List<(string Id, RenderFragment ChildContent)>
             {
                 (@localize("Uncategorized"),
-    @<MudText Typo="Typo.caption">@localize("Uncategorized Fields")</MudText>
+                    @<MudText Typo="Typo.caption">@localize("Uncategorized Fields")</MudText>
                     )
             };
         }
@@ -300,7 +304,7 @@
     /// This call is expected to revert all the changes to the Model instance and return a model before modifications
     /// </summary>
     [Parameter]
-    public Func<Task<T>> OnCancel { get; set; }
+    public Func<Task<T>>? OnCancel { get; set; }
 
     /// <summary>
     /// A callback that will be invoked when the form is created
@@ -368,7 +372,7 @@
 
     private List<PropertyInfo> GetProperties() => typeof(T).GetAeModelProperties();
 
-    private Type GetNonNullableType(PropertyInfo prop) => MudModelFormTools.GetNonNullableType(prop);
+    private Type? GetNonNullableType(PropertyInfo prop) => MudModelFormTools.GetNonNullableType(prop);
 
     private MudFormsCustomValidationValidator<T>? _customValidationValidator;
 
@@ -405,7 +409,7 @@
 
     public async Task OnNotify(ModelFormArgsInternal iargs)
     {
-        var args = new ModelFormChangeArgs() {Context = ModelFormContext, PropertyInfo = iargs.PropertyInfo, EditContext = iargs.EditContext};
+        var args = new ModelFormChangeArgs() { Context = ModelFormContext, PropertyInfo = iargs.PropertyInfo, EditContext = iargs.EditContext };
         await OnChange.InvokeAsync(args);
         await InvokeAsync(() => { StateHasChanged(); });
     }

@@ -7,35 +7,48 @@
 {
     @if (MudModelFormTools.IsNumericType(PropertyInfo.PropertyType))
     {
-        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled" 
-            @key="PropertyInfo.Name" @bind-Value="PropertyValue"
-              Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">@GetFormattedValue()</MudTextField>
+        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled"
+                      @key="PropertyInfo.Name" @bind-Value="PropertyValue"
+                      Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
+            @GetFormattedValue()
+        </MudTextField>
     }
     else
     {
         <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled"
-            @key="PropertyInfo.Name" @bind-Value="PropertyValue"
-              Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">@GetFormattedValue()</MudTextField>
+                      @key="PropertyInfo.Name" @bind-Value="PropertyValue"
+                      Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
+            @GetFormattedValue()
+        </MudTextField>
     }
 }
 else
 {
-
-@if (HasStringLength() is null)
-{
-        <MudTextField @key="PropertyInfo.Name" InputType="@TextFieldType" 
-            @bind-Value="PropertyValue" Label="@GetLabel()" Variant="Variant.Text" 
-            Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" Lines="3"
-              For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))" />
-}
-else
-{
-        <MudTextField @key="PropertyInfo.Name" 
-                    InputType="@TextFieldType" 
-                    @bind-Value="PropertyValue" Label="@GetLabel()" Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
-                    MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
-                    For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))" />
-}
+        @if (MudModelFormTools.GetLineCount(PropertyInfo) is null)
+        {
+            <MudTextField @key="PropertyInfo.Name"
+                          @bind-Value="PropertyValue" 
+                          InputType="@TextFieldType"
+                          Label="@GetLabel()"
+                          Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
+                          MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+                          For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+                          />
+           
+        }
+        else
+        {
+            <MudTextField @key="PropertyInfo.Name" 
+                          @bind-Value="PropertyValue" 
+                          InputType="@TextFieldType"
+                          Label="@GetLabel()" 
+                          Variant="Variant.Text"
+                          Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
+                          Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 3)"
+                          MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+                          For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+                          />
+        }
 }
 
 @code {
@@ -43,10 +56,11 @@ else
     [Parameter]
     public System.Reflection.PropertyInfo PropertyInfo { get; set; }
 
-    [Parameter]
-    public T Instance { get; set; }
+    [Parameter, EditorRequired]
+    public T? Instance { get; set; }
 
-    [Parameter] public ModelFormStyle ModelFormStyle { get; set; }
+    [Parameter]
+    public ModelFormStyle ModelFormStyle { get; set; }
 
     [Parameter]
     public bool Editable { get; set; } = true;
@@ -59,13 +73,13 @@ else
 
     private string localize(string input)
     {
-        return LocalizerFunction is null ? input : (LocalizerFunction(input)?? input);
+        return LocalizerFunction is null ? input : (LocalizerFunction(input) ?? input);
     }
 
-    private InputType TextFieldType { get
-        {
-            return MudModelFormTools.IsPasswordField(PropertyInfo)?InputType.Password:InputType.Text;
-        } }
+    private InputType TextFieldType
+    {
+        get { return MudModelFormTools.IsPasswordField(PropertyInfo) ? InputType.Password : InputType.Text; }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,8 +130,6 @@ else
                 return value.ToString();
             }
         }
-
-
     }
 
     /// <summary>
@@ -133,12 +145,15 @@ else
 
     private string GetID() => PropertyInfo.Name;
 
-
+    private int? HasLineCount()
+    {
+        var att = Attribute.GetCustomAttribute(PropertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute;
+        return att?.LineCount; 
+    }
 
     private int? HasStringLength()
     {
-        var att = StringLengthAttribute.GetCustomAttribute(PropertyInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
+        var att = Attribute.GetCustomAttribute(PropertyInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
         return att?.MaximumLength;
     }
-
 }

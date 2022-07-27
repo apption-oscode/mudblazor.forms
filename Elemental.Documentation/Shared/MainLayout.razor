@@ -15,7 +15,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         @if (!_drawerOpen)
         {
-            <MudText Typo="Typo.h5">Model Form</MudText>
+            <MudText Typo="Typo.h5" Class="ml-4">Model Form</MudText>
         }
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">

@@ -11,32 +11,32 @@ namespace MudForms.Documentation.Data
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(placeholder:"Starship identifier...")]
+        [MudFormLabel(Placeholder ="Starship identifier...")]
         public string Identifier { get; set; }
 
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(placeholder: "Enter Email...")]
+        [MudFormLabel(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
         [Editable(false)]
-        [MudFormLabel(size:100,placeholder:"Describe your starship including crew size")]
+        [MudFormLabel(Placeholder ="Describe your starship including crew size")]
         public string Description { get; set; }
 
         [Required]
-        [MudFormLabel(isDropDown:true)]
+        [MudFormLabel(IsDropDown =true)]
         public string Classification { get; set; }
 
         [Required]
-        [MudFormLabel(isDropDown: true)]
+        [MudFormLabel(IsDropDown = true)]
         public string SubClassification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
-        [MudFormLabel(label: "Maximum Accomodation")]
+        [MudFormLabel(Label = "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
-        [MudFormLabel(label: "Maintenance Cost")]
+        [MudFormLabel(Label = "Maintenance Cost")]
         [Editable(false)]
         [DisplayFormat(DataFormatString = "c")]
         public double MaintenanceCost => MaximumAccommodation * 100;

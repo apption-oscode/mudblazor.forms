@@ -8,33 +8,33 @@ namespace MudForms.Documentation.Data
     {
 
         [AeFormIgnore]
-        private int ID { get; set; } = 1;
+        private int Id { get; set; } = 1;
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(placeholder:"Starship identifier...")]
+        // [MudFormLabel(Placeholder ="Starship identifier...")]
         public string Identifier { get; set; }
 
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
-        [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(placeholder: "Enter Email...")]
+        [StringLength(24, ErrorMessage = "Identifier too long (24 character limit).")]
+        [MudFormLabel(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
         [Required(ErrorMessage = "The Captains Password field is required")]
         [StringLength(20, ErrorMessage = "Identifier too long (20 character limit).")]
-        [MudFormLabel(placeholder: "Enter your credit card number...", isPasswordField:true)]
+        [MudFormLabel(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
         public string CaptainsPassword { get; set; }
 
-        [MudFormLabel(size:50,placeholder:"Describe your starship including crew size")]
+        [MudFormLabel(LineCount = 5, Placeholder ="Describe your starship including crew size")]
         public string Description { get; set; }
 
         [Required]
-        [MudFormLabel(validValues:new[] { "Class1Fighter", "Class1Discovery"})]
+        [MudFormLabel(ValidValues =new[] { "Class1Fighter", "Class1Discovery"})]
         public string Classification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
-        [MudFormLabel(label: "Maximum Accomodation")]
+        [MudFormLabel(Label = "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
         [Required]

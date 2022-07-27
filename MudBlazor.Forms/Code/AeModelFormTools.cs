@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
+// ReSharper disable once CheckNamespace
 namespace MudBlazor.Forms
 {
     public enum ModelFormStyle
@@ -15,15 +16,15 @@ namespace MudBlazor.Forms
 
     public static class MudModelFormTools
     {
-        public static System.Linq.Expressions.Expression<Func<S>> GetExpression<S>(object instance, PropertyInfo propertyInfo)
+        public static Expression<Func<TS>> GetExpression<TS>(object instance, PropertyInfo propertyInfo)
         {
             var constant = Expression.Constant(instance);
             //var asDeclardType = Expression.Convert(constant, propertyInfo.DeclaringType);
             var memberExpression = Expression.Property(constant, propertyInfo);
-            return Expression.Lambda<Func<S>>(memberExpression);
+            return Expression.Lambda<Func<TS>>(memberExpression);
         }
 
-        public static System.Linq.Expressions.Expression GetExpressionObject(object instance, PropertyInfo propertyInfo)
+        public static Expression GetExpressionObject(object instance, PropertyInfo propertyInfo)
         {
             var constant = Expression.Constant(instance);
             //var asDeclardType = Expression.Convert(constant, propertyInfo.DeclaringType);
@@ -38,33 +39,28 @@ namespace MudBlazor.Forms
 
         public static string? GetStringFormat(this PropertyInfo propertyInfo)
         {
-            return DisplayFormatAttribute.IsDefined(propertyInfo, typeof(DisplayFormatAttribute))
-                ? (DisplayFormatAttribute.GetCustomAttribute(propertyInfo, typeof(DisplayFormatAttribute)) as DisplayFormatAttribute).DataFormatString
+            return Attribute.IsDefined(propertyInfo, typeof(DisplayFormatAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayFormatAttribute)) as DisplayFormatAttribute)?.DataFormatString
                 : null;
         }
 
         public static bool IsEditable(this PropertyInfo propertyInfo)
         {
-            return EditableAttribute.IsDefined(propertyInfo, typeof(EditableAttribute))
-                ? (EditableAttribute.GetCustomAttribute(propertyInfo, typeof(EditableAttribute)) as EditableAttribute).AllowEdit
-                : true;
+            return !Attribute.IsDefined(propertyInfo, typeof(EditableAttribute)) 
+                   || ((Attribute.GetCustomAttribute(propertyInfo, typeof(EditableAttribute)) as EditableAttribute)!).AllowEdit;
         }
 
-        public static string[] DropdownValues(this PropertyInfo propertyInfo)
+        public static IEnumerable<string>? DropdownValues(this PropertyInfo propertyInfo)
         {
-            return (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.ValidValues;
+            return (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.ValidValues;
         }
 
         public static bool IsNullable(Type type)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                return true;
-            }
-            return false;
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        public static Type GetNonNullableType(PropertyInfo prop)
+        public static Type? GetNonNullableType(PropertyInfo prop)
         {
             var type = prop.PropertyType;
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -86,48 +82,59 @@ namespace MudBlazor.Forms
             return value;
         }
 
-        public static Nullable<T> AsNullableValue<T>(PropertyInfo prop, object instance) where T : struct
+        public static T? AsNullableValue<T>(PropertyInfo prop, object instance) where T : struct
         {
             if (IsNullable(prop))
             {
-                return prop.GetValue(instance) as Nullable<T>;
+                return prop.GetValue(instance) as T?;
             }
-            else
-            {
-                return new Nullable<T>((T)prop.GetValue(instance));
-            }
+
+            return (T)prop.GetValue(instance);
         }
 
         public static bool IsRequired(PropertyInfo propertyInfo)
         {
-            return RequiredAttribute.IsDefined(propertyInfo, typeof(RequiredAttribute));
+            return Attribute.IsDefined(propertyInfo, typeof(RequiredAttribute));
         }
 
         public static int? GetSize(PropertyInfo propertyInfo)
         {
-            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).InputLength
+            if (Attribute.IsDefined(propertyInfo, typeof(StringLengthAttribute)))
+            {
+                var attr =
+                    Attribute.GetCustomAttribute(propertyInfo, typeof(StringLengthAttribute)) as StringLengthAttribute;
+                return attr?.MaximumLength;
+            }
+
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.StringLength
                 : null;
         }
 
-        public static string GetPlaceHolder(PropertyInfo propertyInfo)
+        public static int? GetLineCount(PropertyInfo propertyInfo)
         {
-            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).PlaceHolder
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.LineCount
+                : null;
+        }
+
+        public static string? GetPlaceHolder(PropertyInfo propertyInfo)
+        {
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Placeholder
                 : null;
         }
 
         public static bool IsPasswordField(PropertyInfo propertyInfo)
         {
-            return MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).IsPasswordField
-                : false;
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute)) 
+                   && ((Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)!).IsPasswordField;
         }
 
         public static string GetLabel(PropertyInfo propertyInfo, Func<string, string> labelFunc, bool includeOptional = true)
         {
-            var label = MudFormLabelAttribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (MudFormLabelAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute).Label
+            var label = Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Label
                 : null;
             if (label is null)
             {
@@ -142,8 +149,7 @@ namespace MudBlazor.Forms
             }
             if (includeOptional && !IsRequired(propertyInfo))
                 return label + " (Optional)";
-            else
-                return label;
+            return label;
         }
 
         public static List<PropertyInfo> GetAeModelProperties(this Type type)
@@ -159,7 +165,7 @@ namespace MudBlazor.Forms
                                      .OrderBy(tp => tp.Key)
                                      .Select(g => g.OrderBy(tp => GetColumn(tp)).Select(tp => tp).ToList()).ToList();
 
-            var result = new List<(string category, List<List<PropertyInfo>> properties)>() { (null, propsNoCat) };
+            var result = new List<(string category, List<List<PropertyInfo>> properties)> { (null, propsNoCat) };
             result.AddRange(allProps.Where(p => Attribute.IsDefined(p, typeof(AeFormCategoryAttribute)))
                 .Select(property => (((Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute).Category,
                 (Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute).CategoryOrder),
@@ -175,12 +181,12 @@ namespace MudBlazor.Forms
 
         private static int GetRow(PropertyInfo p)
         {
-            return int.TryParse((MudFormLabelAttribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Row, out var result) ? result : 0;
+            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Row, out var result) ? result : 0;
         }
 
         private static int GetColumn(PropertyInfo p)
         {
-            return int.TryParse((MudFormLabelAttribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Column, out var result) ? result : 0;
+            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Column, out var result) ? result : 0;
         }
 
         public static string Labelize(string propName)

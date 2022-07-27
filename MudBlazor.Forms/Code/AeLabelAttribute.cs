@@ -4,62 +4,24 @@ namespace MudBlazor.Forms
 {
     public class MudFormLabelAttribute : Attribute
     {
-        private readonly string _label;
-
-        private readonly string _placeHolder;
-
-        private readonly int _order;
-
-        private readonly int? _inputLength;
-        private readonly string[] _validValues;
-        private readonly bool _isDropDown;
-        private readonly string _row;
-        private readonly string _column;
-
-        public MudFormLabelAttribute(string label = null, string placeholder = null, int order = 0, int size = 0, string[] validValues = null, bool isDropDown = false, string row = null, string column = null, bool isPasswordField = false)
+        public string? Label { get; init; }
+        public virtual string? Placeholder { get; init; }
+        public virtual int Order { get; init; }
+        public virtual int StringLength { get; init; }
+        public virtual int LineCount { get; init; }
+        public virtual string[]? ValidValues { get; init; }
+        public virtual bool IsDropDown { get; init; }
+        public virtual string? Row { get; init; }
+        public virtual string? Column { get; init; }
+        public virtual bool IsPasswordField { get; init; }
+        
+        public MudFormLabelAttribute(string label)
         {
-            _label = label;
-            _order = order;
-            _inputLength = size;
-            this._validValues = validValues;
-            _isDropDown = isDropDown;
-            if (size == 0)
-                _inputLength = null;
-            _placeHolder = placeholder;
-            this._row = row;
-            this._column = column;
-            IsPasswordField = isPasswordField;
+            Label = label;
         }
-
-        public virtual string Label
+        
+        public MudFormLabelAttribute()
         {
-            get { return _label; }
         }
-
-        public virtual string PlaceHolder
-        {
-            get { return _placeHolder; }
-        }
-
-        public virtual int? Order
-        {
-            get { return _order; }
-        }
-
-        public virtual int? InputLength
-        {
-            get { return _inputLength; }
-        }
-
-        public virtual string[] ValidValues => _validValues;
-
-        public virtual bool IsDropDown => _isDropDown;
-
-        public virtual string Row
-        { get { return _row; } }
-        public virtual string Column
-        { get { return _column; } }
-
-        public virtual bool IsPasswordField { get; }
     }
 }
