@@ -15,42 +15,42 @@ namespace MudForms.Documentation.Samples
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(Placeholder = "Starship identifier...")]
+        [MudForm(Placeholder = "Starship identifier...")]
         public string Identifier { get; set; }
 
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(Placeholder = "Enter Email...")]
+        [MudForm(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
         [Required(ErrorMessage = "The Captains Password field is required")]
         [StringLength(20, ErrorMessage = "Identifier too long (20 character limit).")]
-        [MudFormLabel(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
+        [MudForm(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
         public string CaptainsPassword { get; set; }
 
-        [MudFormLabel(StringLength = 50, Placeholder = "Describe your starship including crew size")]
+        [MudForm(StringLength = 50, Placeholder = "Describe your starship including crew size")]
         public string Description { get; set; }
 
         [Required]
-        [MudFormLabel(ValidValues = new[] { "Class1Fighter", "Class1Discovery" })]
+        [MudForm(ValidValues = new[] { "Class1Fighter", "Class1Discovery" })]
         public string Classification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
-        [MudFormLabel(Label = "Maximum Accomodation")]
+        [MudForm(Label = "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
-        [MudFormLabel("Validated Design")]
+        [MudForm("Validated Design")]
         public bool IsValidatedDesign { get; set; }
 
         [Required]
-        [MudFormLabel("Production Date")]
+        [MudForm("Production Date")]
         public DateTime ProductionDate { get; set; }
 
         [Required]
-        [MudFormLabel("Owner", IsDropDown =true)]
+        [MudForm("Owner", IsDropDown =true)]
         public StarshipOwner Owner { get; set; }
 
         [Required]

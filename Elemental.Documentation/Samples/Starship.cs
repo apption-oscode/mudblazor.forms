@@ -18,34 +18,34 @@ namespace MudForms.Documentation.Data
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(24, ErrorMessage = "Identifier too long (24 character limit).")]
-        [MudFormLabel(Placeholder = "Enter Email...")]
+        [MudForm(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
         [Required(ErrorMessage = "The Captains Password field is required")]
         [StringLength(20, ErrorMessage = "Identifier too long (20 character limit).")]
-        [MudFormLabel(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
+        [MudForm(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
         public string CaptainsPassword { get; set; }
 
-        [MudFormLabel(LineCount = 5, Placeholder ="Describe your starship including crew size")]
+        [MudForm(LineCount = 5, Placeholder ="Describe your starship including crew size")]
         public string Description { get; set; }
 
         [Required]
-        [MudFormLabel(ValidValues =new[] { "Class1Fighter", "Class1Discovery"})]
+        [MudForm(ValidValues =new[] { "Class1Fighter", "Class1Discovery"})]
         public string Classification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
-        [MudFormLabel(Label = "Maximum Accomodation")]
+        [MudForm(Label = "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
-        [MudFormLabel("Validated Design")]
+        [MudForm("Validated Design")]
         public bool IsValidatedDesign { get; set; }
                 
         public DateTime? ValidationDate { get; set; }
 
         [Required]
-        [MudFormLabel("Production Date")]
+        [MudForm("Production Date")]
         public DateTime ProductionDate { get; set; }
         
         public DateTime? FirstFlightDate { get; set; }

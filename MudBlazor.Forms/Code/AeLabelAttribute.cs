@@ -2,7 +2,7 @@
 
 namespace MudBlazor.Forms
 {
-    public class MudFormLabelAttribute : Attribute
+    public class MudFormAttribute : Attribute
     {
         public string? Label { get; init; }
         public virtual string? Placeholder { get; init; }
@@ -15,12 +15,12 @@ namespace MudBlazor.Forms
         public virtual string? Column { get; init; }
         public virtual bool IsPasswordField { get; init; }
         
-        public MudFormLabelAttribute(string label)
+        public MudFormAttribute(string label)
         {
             Label = label;
         }
         
-        public MudFormLabelAttribute()
+        public MudFormAttribute()
         {
         }
     }

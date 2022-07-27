@@ -52,7 +52,7 @@ namespace MudBlazor.Forms
 
         public static IEnumerable<string>? DropdownValues(this PropertyInfo propertyInfo)
         {
-            return (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.ValidValues;
+            return (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.ValidValues;
         }
 
         public static bool IsNullable(Type type)
@@ -106,35 +106,35 @@ namespace MudBlazor.Forms
                 return attr?.MaximumLength;
             }
 
-            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.StringLength
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.StringLength
                 : null;
         }
 
         public static int? GetLineCount(PropertyInfo propertyInfo)
         {
-            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.LineCount
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.LineCount
                 : null;
         }
 
         public static string? GetPlaceHolder(PropertyInfo propertyInfo)
         {
-            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Placeholder
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.Placeholder
                 : null;
         }
 
         public static bool IsPasswordField(PropertyInfo propertyInfo)
         {
-            return Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute)) 
-                   && ((Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)!).IsPasswordField;
+            return Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute)) 
+                   && ((Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)!).IsPasswordField;
         }
 
         public static string GetLabel(PropertyInfo propertyInfo, Func<string, string> labelFunc, bool includeOptional = true)
         {
-            var label = Attribute.IsDefined(propertyInfo, typeof(MudFormLabelAttribute))
-                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Label
+            var label = Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
+                ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.Label
                 : null;
             if (label is null)
             {
@@ -181,12 +181,12 @@ namespace MudBlazor.Forms
 
         private static int GetRow(PropertyInfo p)
         {
-            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Row, out var result) ? result : 0;
+            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormAttribute)) as MudFormAttribute)?.Row, out var result) ? result : 0;
         }
 
         private static int GetColumn(PropertyInfo p)
         {
-            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute)?.Column, out var result) ? result : 0;
+            return int.TryParse((Attribute.GetCustomAttribute(p, typeof(MudFormAttribute)) as MudFormAttribute)?.Column, out var result) ? result : 0;
         }
 
         public static string Labelize(string propName)

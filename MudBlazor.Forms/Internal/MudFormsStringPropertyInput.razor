@@ -147,7 +147,7 @@ else
 
     private int? HasLineCount()
     {
-        var att = Attribute.GetCustomAttribute(PropertyInfo, typeof(MudFormLabelAttribute)) as MudFormLabelAttribute;
+        var att = Attribute.GetCustomAttribute(PropertyInfo, typeof(MudFormAttribute)) as MudFormAttribute;
         return att?.LineCount; 
     }
 

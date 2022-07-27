@@ -12,38 +12,38 @@ namespace MudForms.Documentation.Data
 
         [Required]
         [StringLength(16, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(Placeholder ="Starship identifier...")]
+        [MudForm(Placeholder ="Starship identifier...")]
         [AeFormCategory("Identification",1)]
         public string Identifier { get; set; }
 
         [Required]
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
-        [MudFormLabel(Placeholder = "Enter Email...")]
+        [MudForm(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
 
-        [MudFormLabel(StringLength =50,Placeholder ="Describe your starship including crew size")]
+        [MudForm(StringLength =50,Placeholder ="Describe your starship including crew size")]
         [AeFormCategory("Details", CategoryOrder = 2)]
         public string Description { get; set; }
 
         [Required]
-        [MudFormLabel(ValidValues =new[] { "Class1Fighter", "Class1Discovery"})]
+        [MudForm(ValidValues =new[] { "Class1Fighter", "Class1Discovery"})]
         [AeFormCategory("Details", CategoryOrder = 2)]
         public string Classification { get; set; }
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
         [AeFormCategory("Details", CategoryOrder = 2)]
-        [MudFormLabel(Label = "Maximum Accomodation")]
+        [MudForm(Label = "Maximum Accomodation")]
         public int MaximumAccommodation { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
         [AeFormCategory("Details", CategoryOrder = 2)]
-        [MudFormLabel("Validated Design")]
+        [MudForm("Validated Design")]
         public bool IsValidatedDesign { get; set; }
 
         [Required]
-        [MudFormLabel("Production Date")]
+        [MudForm("Production Date")]
         [AeFormCategory("Details", CategoryOrder = 2)]
         [DisplayFormat(DataFormatString ="d")]
         public DateTime ProductionDate { get; set; }
