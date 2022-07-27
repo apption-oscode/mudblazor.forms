@@ -7,16 +7,12 @@
 *@
 
 @page "/modelforms/basicform"
-@using Elemental.Components
 @inherits DemoPage
 
-<AeFlex Vertical class="typography-page-container">
-    <DemoSection Path="./Samples/Examples/StarshipForm.razor" AdditionalCS="./Samples/Starship.cs">
-        <AeFlex Vertical>
+
+<DemoSection Path="./Samples/Examples/StarshipForm.razor" AdditionalCS="./Samples/Starship.cs">
             <MudForms.Documentation.Samples.Examples.StarshipForm />
-        </AeFlex>
     </DemoSection>
-</AeFlex>
 
 @code {
 

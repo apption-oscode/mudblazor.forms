@@ -12,19 +12,19 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <img src="/_content/MudForms.Documentation/img/Elemental_128x128.png" style="max-height: 50px; padding-right:4px;" />
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <img src="/_content/MudForms.Documentation/img/Elemental_128x128.png" style="max-height: 50px; padding-right:4px;"/>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         <MudText Typo="Typo.h5" Class="ml-3">Mud.ModelForm</MudText>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-            <MudNavMenu>
-        @foreach (var l in _navLinks)
-        {
-                <MudNavLink Href="@l.To">@l.Label</MudNavLink>
-        }
-            </MudNavMenu>
+        <MudNavMenu>
+            @foreach (var linkData in _navLinks)
+            {
+                <MudNavLink Match="NavLinkMatch.All" Href="@linkData.To" Icon="@linkData.Icon">@linkData.Label</MudNavLink>
+            }
+        </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Medium">
@@ -40,21 +40,28 @@
     {
         _drawerOpen = !_drawerOpen;
     }
-    
 
-    private List<AeNavLink> _navLinks = new List<AeNavLink>
+
+    private struct MudNavLinkData
     {
-        new AeNavLink{ Label = "Home", To = "/", IconName = "function", IconStyle = RXIcon.RXStyle.Fill, Color = "blue" },
-        new AeNavLink{ Label = "Basic Form", To = "/modelforms/basicform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Top Labels", To = "/modelforms/toplabelsform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Custom Labels", To = "/modelforms/customlabelsform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Form With Categories", To = "/modelforms/formwithcategories", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Form With Outline", To = "/modelforms/formwithoutline", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Interactive Form", To = "/modelforms/interactiveform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Flex Form", To = "/modelforms/flexform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Flex Form with Categories", To = "/modelforms/flexformwithcategory", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Interactive Dropdowns", To = "/modelforms/interactivedropdowns", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
-        new AeNavLink{ Label = "Custom Validation", To = "/modelforms/customvalidationform", IconName = "focus", IconStyle = RXIcon.RXStyle.Fill, Color = "green" },
+        public string Label;
+        public string To;
+        public string Icon;
+    }
+
+    private List<MudNavLinkData> _navLinks = new()
+    {
+        new MudNavLinkData { Label = "Home", To = "/", Icon = Icons.Filled.Home },
+        new MudNavLinkData { Label = "Basic Form", To = "/modelforms/basicform", Icon = Icons.Filled.DynamicForm },
+        new MudNavLinkData { Label = "Top Labels", To = "/modelforms/toplabelsform", Icon = Icons.Filled.FormatLineSpacing },
+        new MudNavLinkData { Label = "Custom Labels", To = "/modelforms/customlabelsform", Icon = Icons.Filled.EditNote },
+        new MudNavLinkData { Label = "Form With Categories", To = "/modelforms/formwithcategories", Icon = Icons.Filled.Category },
+        new MudNavLinkData { Label = "Form With Outline", To = "/modelforms/formwithoutline", Icon = Icons.Filled.CheckBoxOutlineBlank },
+        new MudNavLinkData { Label = "Interactive Form", To = "/modelforms/interactiveform", Icon = Icons.Filled.ChangeCircle },
+        new MudNavLinkData { Label = "Flex Form", To = "/modelforms/flexform", Icon = Icons.Filled.Home },
+        new MudNavLinkData { Label = "Flex Form with Categories", To = "/modelforms/flexformwithcategory", Icon = Icons.Filled.Home },
+        new MudNavLinkData { Label = "Interactive Dropdowns", To = "/modelforms/interactivedropdowns", Icon = Icons.Filled.ArrowDropDownCircle },
+        new MudNavLinkData { Label = "Custom Validation", To = "/modelforms/customvalidationform", Icon = Icons.Filled.Home },
     };
 
 }
