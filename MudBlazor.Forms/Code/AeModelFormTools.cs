@@ -106,9 +106,11 @@ namespace MudBlazor.Forms
                 return attr?.MaximumLength;
             }
 
-            return Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
+            var stringLength = Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
                 ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.StringLength
                 : null;
+            
+            return stringLength == 0 ? null : stringLength;
         }
 
         public static int? GetLineCount(PropertyInfo propertyInfo)

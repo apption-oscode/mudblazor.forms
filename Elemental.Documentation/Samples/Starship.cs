@@ -25,7 +25,7 @@ namespace MudForms.Documentation.Data
         [MudForm(Placeholder = "Enter your credit card number...", IsPasswordField = true)]
         public string CaptainsPassword { get; set; }
 
-        [MudForm(LineCount = 5, Placeholder ="Describe your starship including crew size")]
+        [MudForm(StringLength = 13, LineCount = 5, Placeholder ="Describe your starship including crew size (Max 13 characters)...")]
         public string Description { get; set; }
 
         [Required]
