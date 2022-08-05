@@ -34,13 +34,7 @@
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudNavMenu Bordered="true">
-                    @foreach (var anchor in _anchors)
-                    {
-                        <!-- TODO FIX -->
-                        <MudNavLink>@anchor.ChildContent</MudNavLink>
-                    }
-                </MudNavMenu>
+                <MudPageContentNavigation SectionClassSelector="docs-section-header" @ref="_contentNavigation" ActivateFirstSectionAsDefault="true"/>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
@@ -220,6 +214,8 @@
     [Parameter]
     public int Spacing { get; set; } = 3;
 
+    private MudPageContentNavigation _contentNavigation;
+
     protected override async Task OnInitializedAsync()
     {
         if (EnableOutline)
@@ -230,6 +226,11 @@
                     @<MudText Typo="Typo.caption">@Localize("Uncategorized Fields")</MudText>
                     )
             };
+            foreach (var category in ModelFormContext.GetCategories())
+            {
+                if (_contentNavigation != null)
+                    _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category),false);
+            }
         }
 
         ModelFormContext.Logger = Logger;
