@@ -28,7 +28,11 @@
     @if (EnableOutline)
     {
         <MudDrawer Anchor="Anchor.Right" Open="true" Elevation="0" Color="Color.Transparent" ClipMode="DrawerClipMode.Docked">
-            <MudPageContentNavigation class="mt-8" @ref="_contentNavigation" ActivateFirstSectionAsDefault="true" />
+            <MudPageContentNavigation 
+                class="mt-8" 
+                @ref="_contentNavigation"
+                SectionClassSelector="forms-section-header"
+                ActivateFirstSectionAsDefault="true" />
         </MudDrawer>
     }
     <div>
@@ -54,7 +58,7 @@
                 @if (!string.IsNullOrWhiteSpace(category.category))
                 {
                     <MudStack Class="mt-12">
-                        <MudText id="@category.category" Typo="Typo.h6">@Localize(category.category)</MudText>
+                        <MudText Class="forms-section-header" id="@category.category" Typo="Typo.h6">@Localize(category.category)</MudText>
                         <MudText Typo="Typo.subtitle2">@ModelFormContext.GetCategoryNote(category.category)</MudText>
                         @if (IsSectionLocksVisible)
                         {
