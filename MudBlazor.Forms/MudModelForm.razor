@@ -31,7 +31,7 @@
             <MudPageContentNavigation class="mt-8" @ref="_contentNavigation" ActivateFirstSectionAsDefault="true" />
         </MudDrawer>
     }
-    <div id=@(EnableOutline ? "Uncategorized" : "")>
+    <div>
         <EditForm Model="Model" OnSubmit="@OnSubmit">
             @if (ModelFormContext.CustomValidation)
             {
@@ -187,15 +187,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (EnableOutline)
-        {
-            _anchors = new List<(string Id, RenderFragment ChildContent)>
-            {
-                (Localize("Uncategorized"),
-                    @<MudText Typo="Typo.caption">@Localize("Uncategorized Fields")</MudText>
-                    )
-            };
-        }
+
 
         ModelFormContext.Logger = Logger;
         ModelFormContext.RefreshModel = async () => await InvokeAsync(StateHasChanged);
@@ -210,16 +202,15 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender)
+        if (!firstRender) return;
+        
+        if (EnableOutline && _contentNavigation != null)
         {
-            if (EnableOutline && _contentNavigation != null)
+            foreach (var category in ModelFormContext.GetCategories())
             {
-                foreach (var category in ModelFormContext.GetCategories())
-                {
-                    _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category), false);
-                }
-                StateHasChanged();
+                _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category), true);
             }
+            // StateHasChanged();
         }
     }
 
@@ -336,8 +327,6 @@
     public string? UncheckedIcon { get; set; }
 
     private bool _isCancelled = false;
-
-    private List<(string Id, RenderFragment ChildContent)>? _anchors;
 
     private List<PropertyInfo> GetProperties() => typeof(T).GetAeModelProperties();
 
