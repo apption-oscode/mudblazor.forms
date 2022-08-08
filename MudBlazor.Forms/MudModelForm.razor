@@ -27,19 +27,9 @@
 {
     @if (EnableOutline)
     {
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@Localize("Form Navigation")</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudPageContentNavigation SectionClassSelector="docs-section-header" @ref="_contentNavigation" ActivateFirstSectionAsDefault="true"/>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-            </MudCardActions>
-        </MudCard>
+        <MudDrawer Breakpoint="Breakpoint.Lg" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Elevation="0" Color="Color.Transparent">
+            <MudPageContentNavigation @ref="_contentNavigation" ActivateFirstSectionAsDefault="true"/>
+        </MudDrawer>
     }
     <div id=@(EnableOutline ? "Uncategorized" : "")>
         <EditForm Model="Model" OnSubmit="@OnSubmit">
@@ -77,19 +67,13 @@
                         }
 
                         <MudPaper Class="d-flex flex-row flex-grow-1 gap-4" Elevation="0">
-                            <MudText Variant="h3" id="@id">
-                                @Localize(category.category)
-                                <label class="ae ae-form-control-label notes">
-                                    <MudText>@ModelFormContext.GetCategoryNote(category.category)</MudText>
-                                </label>
+                            <MudDivider DividerType="DividerType.Inset" />
+                            <MudText Typo="Typo.h4">@Localize(category.category)</MudText>
+                                <MudText Typo="Typo.subtitle2">@ModelFormContext.GetCategoryNote(category.category)</MudText>
                                 @if (IsSectionLocksVisible)
                                 {
-                                    <MudPaper>
                                         <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@Localize("Lock Section") </MudCheckBox>
-                                    </MudPaper>
                                 }
-                            </MudText>
-
                         </MudPaper>
                     }
                 </div>
@@ -226,11 +210,6 @@
                     @<MudText Typo="Typo.caption">@Localize("Uncategorized Fields")</MudText>
                     )
             };
-            foreach (var category in ModelFormContext.GetCategories())
-            {
-                if (_contentNavigation != null)
-                    _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category),false);
-            }
         }
 
         ModelFormContext.Logger = Logger;
@@ -247,6 +226,14 @@
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender) StateHasChanged();
+        if (EnableOutline && _contentNavigation != null)
+        {
+            foreach (var category in ModelFormContext.GetCategories())
+            {
+                _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category), false);
+            }
+            StateHasChanged();
+        }
     }
 
     [Parameter]
