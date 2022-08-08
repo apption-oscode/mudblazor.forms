@@ -7,16 +7,13 @@
 *@
 
 @page "/modelforms/formwithoutline"
-@using Elemental.Components
 @inherits DemoPage
 
-<AeFlex Vertical class="typography-page-container">
+<div style="position: relative">
     <DemoSection Path="./Samples/Examples/TransportStarshipFormOutline.razor" AdditionalCs="./Samples/TransportStarship.cs">
-        <AeFlex Vertical>
-            <MudForms.Documentation.Samples.Examples.TransportStarshipFormOutline />
-        </AeFlex>
+        <MudForms.Documentation.Samples.Examples.TransportStarshipFormOutline/>
     </DemoSection>
-</AeFlex>
+</div>
 
 @code {
 

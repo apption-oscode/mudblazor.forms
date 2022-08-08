@@ -47,7 +47,7 @@ namespace MudBlazor.Forms
         public List<PropertyInfo> Properties { get; private set; }
 
         public List<(string category, List<List<PropertyInfo>> properties)> GetCategories() =>
-            typeof(T).GetMudModelFormCategories().Select(elem => (elem.category,
+            typeof(T).GetMudModelFormCategories().Select(elem => (string.IsNullOrWhiteSpace(elem.category) ? "Uncategorized" : elem.category,
                     visibleProperties: elem.properties.Select(l => l.Where(l => IsVisible(l)).ToList()).ToList()))
                     .Where(p => p.visibleProperties.Any(l => l.Count > 0)).ToList();
 

@@ -27,8 +27,8 @@
 {
     @if (EnableOutline)
     {
-        <MudDrawer Breakpoint="Breakpoint.Lg" Anchor="Anchor.End" ClipMode="DrawerClipMode.Always" Elevation="0" Color="Color.Transparent">
-            <MudPageContentNavigation @ref="_contentNavigation" ActivateFirstSectionAsDefault="true"/>
+        <MudDrawer Anchor="Anchor.Right" Open="true" Elevation="0" Color="Color.Transparent" ClipMode="DrawerClipMode.Docked">
+            <MudPageContentNavigation class="mt-8" @ref="_contentNavigation" ActivateFirstSectionAsDefault="true" />
         </MudDrawer>
     }
     <div id=@(EnableOutline ? "Uncategorized" : "")>
@@ -51,32 +51,17 @@
                 var isCategoryLocked = ModelFormContext.IsCategoryLocked(category.category);
 
                 // doing anchor stuff
-                <div style="display: flex; flex-direction: row">
-                    @if (!string.IsNullOrWhiteSpace(category.category))
-                    {
-                        string id = "";
-                        @if (EnableOutline)
+                @if (!string.IsNullOrWhiteSpace(category.category))
+                {
+                    <MudStack Class="mt-12">
+                        <MudText id="@category.category" Typo="Typo.h6">@Localize(category.category)</MudText>
+                        <MudText Typo="Typo.subtitle2">@ModelFormContext.GetCategoryNote(category.category)</MudText>
+                        @if (IsSectionLocksVisible)
                         {
-                            id = category.category;
-                            if (_anchors != null && !_anchors.Any(a => a.Id == id))
-                            {
-                                _anchors.Add((id,
-                                    @<MudText Typo="Typo.button">@id</MudText>
-                                    ));
-                            }
+                            <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@Localize("Lock Section") </MudCheckBox>
                         }
-
-                        <MudPaper Class="d-flex flex-row flex-grow-1 gap-4" Elevation="0">
-                            <MudDivider DividerType="DividerType.Inset" />
-                            <MudText Typo="Typo.h4">@Localize(category.category)</MudText>
-                                <MudText Typo="Typo.subtitle2">@ModelFormContext.GetCategoryNote(category.category)</MudText>
-                                @if (IsSectionLocksVisible)
-                                {
-                                        <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@Localize("Lock Section") </MudCheckBox>
-                                }
-                        </MudPaper>
-                    }
-                </div>
+                    </MudStack>
+                }
 
                 // loop properties
                 @foreach (var props in category.properties)
@@ -198,7 +183,7 @@
     [Parameter]
     public int Spacing { get; set; } = 3;
 
-    private MudPageContentNavigation _contentNavigation;
+    private MudPageContentNavigation? _contentNavigation;
 
     protected override async Task OnInitializedAsync()
     {
@@ -225,14 +210,16 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender) StateHasChanged();
-        if (EnableOutline && _contentNavigation != null)
+        if (firstRender)
         {
-            foreach (var category in ModelFormContext.GetCategories())
+            if (EnableOutline && _contentNavigation != null)
             {
-                _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category), false);
+                foreach (var category in ModelFormContext.GetCategories())
+                {
+                    _contentNavigation.AddSection(new MudPageContentSection(Localize(category.category), category.category), false);
+                }
+                StateHasChanged();
             }
-            StateHasChanged();
         }
     }
 
