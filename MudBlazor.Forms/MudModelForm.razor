@@ -187,6 +187,9 @@
     [Parameter]
     public int Spacing { get; set; } = 3;
 
+    [Parameter]
+    public string LockIcon { get; set; } = "";
+
     private MudPageContentNavigation? _contentNavigation;
 
     protected override async Task OnInitializedAsync()
