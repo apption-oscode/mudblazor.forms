@@ -1,0 +1,179 @@
+﻿@*
+    Copyright 2020 Apption Corporation
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+    Title: Model Form with Relationships
+    Description: This sample uses RegisterListValue to map relationships dropdowns
+*@
+
+
+<MudModelForm T="StarshipHierarchy"
+             Model="@_starshipHierarchy"
+             SubmitLabel="Save changes"
+             OnValidSubmit="HandleValidSubmit"
+             OnChange="OnChange"
+             CancelLabel="Cancel"             
+             OnConfigure="OnConfigure"
+             OnCancel="CreateStarshipHierarchy" />
+
+<DebugObject Object="@_starshipHierarchy"/>
+
+@code {
+    private StarshipHierarchy _starshipHierarchy;
+    private List<StarshipLevel> _sectors = new();
+    private List<StarshipLevel> _masterBranches = new();
+    private List<StarshipLevel> _branches = new();
+    private List<StarshipLevel> _masterDivisions = new();
+    private List<StarshipLevel> _divisions = new();
+
+
+    private async Task<StarshipHierarchy> CreateStarshipHierarchy()
+    {
+        return await Task.FromResult(new StarshipHierarchy());
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _starshipHierarchy = await CreateStarshipHierarchy();
+        GetStarshipBranches();
+        GetStarshipDivisions();
+    }
+
+    private void OnConfigure(IModelFormContext context)
+    {
+
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipSector, p => p?.LevelName?? "N/A",() => GetStarshipSectors(), s => RefreshBranches(s, context));
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipBranch, p => p?.LevelName?? "N/A",() => GetStarshipBranches(), s => RefreshDivisions(s, context));
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipDivision, p => p?.LevelName?? "N/A",() => GetStarshipDivisions());
+
+    }
+
+    private void OnChange(ModelFormChangeArgs args)
+    {
+        OnConfigure(args.Context);
+    }
+
+    private List<StarshipLevel> GetStarshipSectors()
+    {
+        if (!_sectors.Any())
+        {
+            _sectors.Add(null);
+            _sectors.Add(new() { Id = 1, ParentId = 0, LevelName = "Home Sector One" });
+            _sectors.Add(new() { Id = 2, ParentId = 0, LevelName = "Home Sector Two" });
+            _sectors.Add(new() { Id = 3, ParentId = 0, LevelName = "Home Sector Three" });
+            _sectors.Add(new() { Id = 4, ParentId = 0, LevelName = "Home Sector Four" });
+            _sectors.Add(new() { Id = 5, ParentId = 0, LevelName = "Home Sector Five" });
+        }
+        return _sectors;
+    }
+
+    private List<StarshipLevel> GetStarshipBranches()
+    {
+        if (!_masterBranches.Any())
+        {
+            _masterBranches.Add(null);
+            _masterBranches.Add(new() { Id = 6, ParentId = 1, LevelName = "Sector One, Branch One" });
+            _masterBranches.Add(new() { Id = 7, ParentId = 1, LevelName = "Sector One, Branch Two" });
+            _masterBranches.Add(new() { Id = 8, ParentId = 1, LevelName = "Sector One, Branch Three" });
+            _masterBranches.Add(new() { Id = 9, ParentId = 1, LevelName = "Sector One, Branch Four" });
+
+            _masterBranches.Add(new() { Id = 10, ParentId = 2, LevelName = "Sector Two, Branch One" });
+            _masterBranches.Add(new() { Id = 11, ParentId = 2, LevelName = "Sector Two, Branch Two" });
+            _masterBranches.Add(new() { Id = 12, ParentId = 2, LevelName = "Sector Two, Branch Three" });
+
+            _masterBranches.Add(new() { Id = 13, ParentId = 3, LevelName = "Sector Three, Branch One" });
+            _masterBranches.Add(new() { Id = 14, ParentId = 3, LevelName = "Sector Three, Branch Two" });
+            _masterBranches.Add(new() { Id = 15, ParentId = 3, LevelName = "Sector Three, Branch Three" });
+
+        }
+        if (!_branches.Any())
+        {
+            RefreshBranches(null, null);
+        }
+        return _branches;
+    }
+
+    private void RefreshBranches(StarshipLevel sector, IModelFormContext context)
+    {
+        if (sector is not null)
+        {
+            _branches = _masterBranches.Where(b => (b == null) || (b != null && b.ParentId == sector.Id)).ToList();
+        }
+        else
+        {
+            _branches = new() { null };
+        }
+
+        if (context is not null)
+        {
+            context.RefreshOptions<StarshipHierarchy>(f => f.StarshipBranch);
+        }
+
+
+    }
+
+    private List<StarshipLevel> GetStarshipDivisions()
+    {
+
+        if (!_masterDivisions.Any())
+        {
+            _masterDivisions.Add(null);
+            _masterDivisions.Add(new() { Id = 16, ParentId = 6, LevelName = "Sector One, Branch One, Division One" });
+            _masterDivisions.Add(new() { Id = 17, ParentId = 6, LevelName = "Sector One, Branch One, Division Two" });
+            _masterDivisions.Add(new() { Id = 18, ParentId = 7, LevelName = "Sector One, Branch Two, Division One" });
+            _masterDivisions.Add(new() { Id = 19, ParentId = 7, LevelName = "Sector One, Branch Two, Division Two" });
+
+            _masterDivisions.Add(new() { Id = 20, ParentId = 10, LevelName = "Sector Two, Branch One, Division One" });
+            _masterDivisions.Add(new() { Id = 21, ParentId = 10, LevelName = "Sector Two, Branch One, Division Two" });
+            _masterDivisions.Add(new() { Id = 22, ParentId = 10, LevelName = "Sector Two, Branch One, Division Three" });
+
+            _masterDivisions.Add(new() { Id = 23, ParentId = 13, LevelName = "Sector Three, Branch One, Division One" });
+            _masterDivisions.Add(new() { Id = 24, ParentId = 14, LevelName = "Sector Three, Branch Two, Division One" });
+            _masterDivisions.Add(new() { Id = 25, ParentId = 14, LevelName = "Sector Three, Branch Two, Division Two" });
+        }
+
+        if (!_divisions.Any())
+        {
+            RefreshDivisions(null, null);
+        }
+
+        return _divisions;
+    }
+
+    private void RefreshDivisions(StarshipLevel branch, IModelFormContext context)
+    {
+        if (branch is not null)
+        {
+            _divisions = _masterDivisions.Where(b => (b == null) || (b != null && b.ParentId == branch.Id)).ToList();
+        }
+        else
+        {
+            _divisions = new() { null };
+        }
+
+        if (context is not null)
+        {
+            context.RefreshOptions<StarshipHierarchy>(f => f.StarshipDivision);
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        //do something if form is valid
+        StateHasChanged();
+    }
+
+}
