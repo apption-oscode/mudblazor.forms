@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Elemental.Documentation\MudForms.Documentation.csproj" />
     <ProjectReference Include="..\Elemental.Theme\Elemental.Theme.csproj" />
     <ProjectReference Include="..\Elemental\Elemental.csproj" />
+    <ProjectReference Include="..\MudForms.Documentation\MudForms.Documentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Elemental.Components;
+﻿using MudBlazor.Forms;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,7 @@ namespace Elemental.Tests
         [Fact]
         public void Test_Labelize1()
         {
-            Assert.Equal("Class 1 Fighter", AeModelFormTools.Labelize("Class1Fighter"));
+            Assert.Equal("Class 1 Fighter", MudModelFormTools.Labelize("Class1Fighter"));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Elemental.Tests
 {
     public class SampleParsingTests
     {
-        private const string _testFilePath = "./Samples/Dropdowns/Examples/BasicDropdown.razor";
+        private const string _testFilePath = "./Samples/Examples/StarshipForm.razor";
         private const string _testTitle = "Test Component";
         private const string _testDescription = "Lorem ipsum dolor sit amet.";
 
@@ -17,7 +17,7 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             
             Assert.NotNull(lines);
-            Assert.Equal(34, lines.Count());
+            Assert.Equal(71, lines.Count());
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             var title = ParsedFile.ParseTitle(lines);
             
-            Assert.Equal("Basic Dropdowns", title);
+            Assert.Equal("Model Form", title);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             var description = ParsedFile.ParseDescription(lines);
 
-            Assert.StartsWith("Single option dropdown selector", description);            
+            Assert.StartsWith("Form is generated from .NET", description);            
         }
 
         [Fact]
@@ -44,8 +44,8 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             var html = ParsedFile.ParseHtml(lines);
 
-            Assert.Equal(7, html.Count);
-            Assert.Contains(@"<AeTypography>", html.First());
+            Assert.Equal(11, html.Count);
+            Assert.Contains(@"<MudModelForm", html.First());
             Assert.Contains(@"/>", html.Last());
         }
 
@@ -55,17 +55,9 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             var code = ParsedFile.ParseCode(lines);
 
-            Assert.Equal(15, code.Count);
+            Assert.Equal(40, code.Count);
             Assert.Equal("@code {", code.First());
             Assert.Equal("}", code.Last());
-        }
-
-        [Fact]
-        public void CanFindScss()
-        {
-            var lines = ParsedFile.ReadScssLines("./Samples/Cards/Examples/CardSamples.razor");
-            var code = ParsedFile.ParseScss(lines);
-            Assert.Equal(35, code.Count);
         }
 
 

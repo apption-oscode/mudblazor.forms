@@ -73,8 +73,9 @@ namespace MudForms.Documentation
             var lines = ReadFile(pathname);
             if (lines is null || !lines.Any())
             {
-                Console.Error.WriteLine($"Path {pathname} not found");
-                return new[] { $"Title: N/A (File {pathname} not found)", $"Description: N/A (File {pathname} not found)", $"File {pathname} not found" };
+                var full = Path.GetFullPath(pathname);
+                Console.Error.WriteLine($"Path {full} not found");
+                return new[] { $"Title: N/A (File {full} not found)", $"Description: N/A (File {full} not found)", $"File {pathname} not found" };
             }
             return lines;
 
