@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation.Server", "Elemental.Documentation.Server\MudForms.Documentation.Server.csproj", "{6928E2F0-A569-4F6B-B566-1569FFB9BE32}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elemental.Theme", "Elemental.Theme\Elemental.Theme.csproj", "{F7DD851E-204F-47B2-95BA-15DA4126E55A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{A24AE759-C61E-4EF5-951E-0659AAD792E7}"
@@ -22,15 +20,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{
 		azure-pipelines-master.yml = azure-pipelines-master.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation.Wasm", "Elemental.Documentation.Wasm\MudForms.Documentation.Wasm.csproj", "{69023201-0427-461B-8A33-4DF631983F6F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation", "Elemental.Documentation\MudForms.Documentation.csproj", "{153B41BD-5CF3-4F93-8713-1E54C368075A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elemental.FormBuilder", "Elemental.FormBuilder\Elemental.FormBuilder.csproj", "{E5D2C43C-DB91-420B-A70B-AADC38A100E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazor.Forms", "MudBlazor.Forms\MudBlazor.Forms.csproj", "{FF32E391-A0F8-412D-99FE-2B4E2D96F12E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Tests", "MudForms.Tests\MudForms.Tests.csproj", "{37F564B6-CDC9-4E7F-8402-864D7D9759E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation", "MudForms.Documentation\MudForms.Documentation.csproj", "{5CA463E4-8457-436F-98F0-0B167C870192}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation.Server", "MudForms.Documentation.Server\MudForms.Documentation.Server.csproj", "{DD855CD2-27C9-47B1-899E-FE63A26674DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudForms.Documentation.Wasm", "MudForms.Documentation.Wasm\MudForms.Documentation.Wasm.csproj", "{8213F638-46F3-41A9-907F-39323437C9A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,22 +42,10 @@ Global
 		{DBF17630-DDE9-412A-9CDB-E0E7B6E86D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF17630-DDE9-412A-9CDB-E0E7B6E86D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF17630-DDE9-412A-9CDB-E0E7B6E86D95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6928E2F0-A569-4F6B-B566-1569FFB9BE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6928E2F0-A569-4F6B-B566-1569FFB9BE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6928E2F0-A569-4F6B-B566-1569FFB9BE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6928E2F0-A569-4F6B-B566-1569FFB9BE32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F7DD851E-204F-47B2-95BA-15DA4126E55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7DD851E-204F-47B2-95BA-15DA4126E55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7DD851E-204F-47B2-95BA-15DA4126E55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7DD851E-204F-47B2-95BA-15DA4126E55A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69023201-0427-461B-8A33-4DF631983F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69023201-0427-461B-8A33-4DF631983F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69023201-0427-461B-8A33-4DF631983F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69023201-0427-461B-8A33-4DF631983F6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{153B41BD-5CF3-4F93-8713-1E54C368075A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{153B41BD-5CF3-4F93-8713-1E54C368075A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{153B41BD-5CF3-4F93-8713-1E54C368075A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{153B41BD-5CF3-4F93-8713-1E54C368075A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5D2C43C-DB91-420B-A70B-AADC38A100E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5D2C43C-DB91-420B-A70B-AADC38A100E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5D2C43C-DB91-420B-A70B-AADC38A100E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -70,6 +58,18 @@ Global
 		{37F564B6-CDC9-4E7F-8402-864D7D9759E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37F564B6-CDC9-4E7F-8402-864D7D9759E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37F564B6-CDC9-4E7F-8402-864D7D9759E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CA463E4-8457-436F-98F0-0B167C870192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA463E4-8457-436F-98F0-0B167C870192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA463E4-8457-436F-98F0-0B167C870192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA463E4-8457-436F-98F0-0B167C870192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD855CD2-27C9-47B1-899E-FE63A26674DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD855CD2-27C9-47B1-899E-FE63A26674DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD855CD2-27C9-47B1-899E-FE63A26674DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD855CD2-27C9-47B1-899E-FE63A26674DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8213F638-46F3-41A9-907F-39323437C9A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8213F638-46F3-41A9-907F-39323437C9A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8213F638-46F3-41A9-907F-39323437C9A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8213F638-46F3-41A9-907F-39323437C9A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
