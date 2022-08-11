@@ -58,5 +58,5 @@ jobs:
     inputs:
       command: custom
       custom: nuget
-      arguments: 'push MudBlazor.Forms/bin/Release/MudBlazor.Forms.$(Build.BuildNumber).nupkg --api-key $(NugetAPISecret) --source https://api.nuget.org/v3/index.json'
+      arguments: 'push MudBlazor.Forms/bin/Release/Ae.MudBlazor.Forms.$(Build.BuildNumber).nupkg --api-key $(NugetAPISecret) --source https://api.nuget.org/v3/index.json'
 

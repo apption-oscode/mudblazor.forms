@@ -5,7 +5,7 @@
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageId>MudBlazor.Forms</PackageId>
+		<PackageId>Ae.MudBlazor.Forms</PackageId>
 		<Nullable>enable</Nullable>
 		<LangVersion>preview</LangVersion>
 		<Authors>Apption</Authors>
@@ -24,6 +24,7 @@
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<Title>AElemental Model Form for MudBlazor</Title>
 	</PropertyGroup>
 
   <ItemGroup>
