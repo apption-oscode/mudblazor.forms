@@ -2,7 +2,7 @@
 @namespace MudBlazor.Forms
 @using Microsoft.AspNetCore.Components.Forms
 
-<MudField Label="@GetLabel()">
+@*<MudField Label="@GetLabel()">*@
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
     <MudCheckBox T=bool? TriState="true" @bind-Checked="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
@@ -11,7 +11,7 @@ else
 {
     <MudCheckBox T=bool @bind-Checked="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))"/>
 }
-</MudField>
+@*</MudField>*@
 
 @code {
 
