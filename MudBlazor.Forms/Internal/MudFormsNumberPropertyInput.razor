@@ -34,9 +34,12 @@
         }
         set
         {
-            var prevValue = PropertyInfo.GetValue(Instance);
-            PropertyInfo.SetValue(Instance, value);
-            valueChangedCallback.InvokeAsync(value);
+            if (PropertyInfo.CanWrite)
+            {
+                var prevValue = PropertyInfo.GetValue(Instance);
+                PropertyInfo.SetValue(Instance, value);
+                valueChangedCallback.InvokeAsync(value);
+            }
         }
     }
 
