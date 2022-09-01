@@ -38,7 +38,7 @@ namespace MudForms.Documentation.Data
 
         [MudForm(Label = "Maintenance Cost")]
         [Editable(false)]
-        [DisplayFormat(DataFormatString = "c")]
+        [DisplayFormat(DataFormatString = "C2")]
         public double MaintenanceCost => MaximumAccommodation * 100;
 
         [Required]
@@ -48,8 +48,11 @@ namespace MudForms.Documentation.Data
 
         [Required]
         [MudForm("Production Date")]
+        [DisplayFormat(DataFormatString = "yyyy/MM/dd")]
         public DateTime ProductionDate { get; set; }
-        
+
+        [Editable(false)]
+        [DisplayFormat(DataFormatString = "yyyy/MM/dd")]
         public DateTime? FirstFlightDate { get; set; }
 
         public int? SubLightEngines { get; set; }
