@@ -6,7 +6,8 @@
         Label="@GetLabel()" Variant="Variant.Text"
         For="@(MudModelFormTools.GetExpression<T>(Instance,PropertyInfo))"
         ReadOnly="@IsDisabled"
-        />
+        Format="@_format"
+/>
 
 
 @code {
@@ -26,6 +27,8 @@
     public object Instance { get; set; }
 
     private bool IsDisabled => !PropertyInfo.IsEditable();
+
+    private string _format;
 
     public T PropertyValue
     {
@@ -49,6 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
+        _format = PropertyInfo.GetStringFormat() ?? string.Empty;
     }
 
     private EventCallback<object> valueChangedCallback;

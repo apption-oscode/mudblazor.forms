@@ -38,7 +38,7 @@ namespace MudForms.Documentation.Data
 
         [MudForm(Label = "Maintenance Cost")]
         [Editable(false)]
-        [DisplayFormat(DataFormatString = "c")]
+        [DisplayFormat(DataFormatString = "C2")]
         public double MaintenanceCost => MaximumAccommodation * 100;
 
         [Required]
