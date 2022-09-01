@@ -1,7 +1,14 @@
 ﻿@typeparam T
 @namespace MudBlazor.Forms
 
-    <MudDatePicker Label="@GetLabel()" Editable="true" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" />
+@if(IsEditable)
+{
+    <MudDatePicker Label="@GetLabel()" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" />
+}
+else
+{
+    <MudFormsPropertyValueDisplay PropertyInfo="PropertyInfo" Instance="Instance" ModelFormStyle="ModelFormStyle" />
+}
 
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
@@ -30,12 +37,16 @@ else
     [Parameter]
     public T Instance { get; set; }
 
+
     /// <summary>
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name= "LabelForPropertyFunc")]
     public Func<string,string> LabelForPropertyFunc { get; set; } = null;
 
+
+    private bool IsEditable => PropertyInfo.IsEditable();
+    
     private string GetLabel()
     {
         return MudModelFormTools.GetLabel(PropertyInfo,LabelForPropertyFunc, false);

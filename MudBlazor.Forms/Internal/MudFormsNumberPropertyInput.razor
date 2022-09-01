@@ -5,6 +5,7 @@
 <MudNumericField T=T @bind-Value="PropertyValue" 
         Label="@GetLabel()" Variant="Variant.Text"
         For="@(MudModelFormTools.GetExpression<T>(Instance,PropertyInfo))"
+        ReadOnly="@IsDisabled"
         />
 
 
@@ -23,6 +24,8 @@
 
     [Parameter]
     public object Instance { get; set; }
+
+    private bool IsDisabled => !PropertyInfo.IsEditable();
 
     public T PropertyValue
     {
