@@ -34,7 +34,7 @@ namespace MudForms.Documentation.Data
 
         [Range(1, 100000, ErrorMessage = "Accommodation invalid (1-100000).")]
         [MudForm(Label = "Maximum Accomodation")]
-        [DisplayFormat(DataFormatString = "C")]
+        [DisplayFormat(DataFormatString = "C2")]
         public double MaximumAccommodation { get; set; }
 
         [MudForm(Label = "Maintenance Cost")]
