@@ -15,7 +15,7 @@ namespace MudForms.Documentation.Data
         public string Identifier { get; set; }
 
         [Required]
-        //[RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid Email Address")]
         [StringLength(20, ErrorMessage = "Identifier too long (16 character limit).")]
         [MudForm(Placeholder = "Enter Email...")]
         public string CaptainsEmail { get; set; }
@@ -43,7 +43,7 @@ namespace MudForms.Documentation.Data
         public double MaintenanceCost => MaximumAccommodation * 100;
 
         [Required]
-        //[Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "This form disallows unapproved ships.")]
         [MudForm("Validated Design")]
         public bool IsValidatedDesign { get; set; }
 
