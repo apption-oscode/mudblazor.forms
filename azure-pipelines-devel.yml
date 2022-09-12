@@ -8,7 +8,7 @@ trigger:
 jobs:
 - job: LinuxJob
   pool:
-    name: Azure Pipelines
+    name: Apption Pool
   workspace:
     clean: all
     
