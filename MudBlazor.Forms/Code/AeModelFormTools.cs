@@ -282,5 +282,14 @@ namespace MudBlazor.Forms
             return DateTimeTypes.Contains(type) ||
                    DateTimeTypes.Contains(Nullable.GetUnderlyingType(type));
         }
+
+        public static string GetFieldNote(IModelFormContext modelFormContext, PropertyInfo propertyInfo)
+        {
+            if (modelFormContext != null && !string.IsNullOrEmpty(modelFormContext.GetFieldNote(propertyInfo)))
+            {
+                return modelFormContext.GetFieldNote(propertyInfo);
+            }
+            return string.Empty;
+        }
     }
 }

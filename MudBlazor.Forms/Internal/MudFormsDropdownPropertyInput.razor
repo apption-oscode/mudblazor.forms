@@ -10,7 +10,7 @@
 
 @if (ValidDisplayValues != null)
 {
-    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex">
+    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex" HelperText="@_fieldNotes">
         @if (!MudModelFormTools.IsRequired(PropertyInfo))
         {
             <MudSelectItem @key="@GetKey(NO_VALUE)" Value="@NO_VALUE">@localize(GetPlaceholder())</MudSelectItem>
@@ -59,6 +59,8 @@ else
 
     private ImmutableList<object> ActualValues { get; set; }
 
+    private string? _fieldNotes;
+
     private string GetKey(int il)
     {
         return PropertyInfo.Name + "_" + il;
@@ -94,6 +96,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
         UpdateOptions();
         ModelFormContext.RegisterOptionComponent(PropertyInfo, this, () => UpdateOptions());

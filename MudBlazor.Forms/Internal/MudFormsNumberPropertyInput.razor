@@ -1,14 +1,17 @@
-﻿@typeparam T
+﻿@typeparam S
+@typeparam U
+
 @using Microsoft.AspNetCore.Components.Forms
 @namespace MudBlazor.Forms
 
-<MudNumericField T=T @bind-Value="PropertyValue" 
+<MudNumericField T=S @bind-Value="PropertyValue" 
         Label="@GetLabel()" Variant="Variant.Text"
-        For="@(MudModelFormTools.GetExpression<T>(Instance,PropertyInfo))"
+        For="@(MudModelFormTools.GetExpression<S>(Instance,PropertyInfo))"
         ReadOnly="@IsDisabled"
         Format="@_format"
         Pattern="@_pattern"
-/>
+        HelperText="@_fieldNotes" 
+        />
 
 
 @code {
@@ -31,14 +34,15 @@
     private bool IsDisabled => !PropertyInfo.IsEditable();
 
     private string? _format;
+    private string? _fieldNotes;
 
-    public T PropertyValue
+    public S PropertyValue
     {
         get
         {
             var val = PropertyInfo.GetValue(Instance);
-            if (val is null) return default(T);
-            return (T)val;
+            if (val is null) return default(S);
+            return (S)val;
         }
         set
         {
@@ -54,6 +58,7 @@
     protected override async Task OnInitializedAsync()
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
+        _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
 
     }
 
@@ -81,7 +86,7 @@
     public Func<string, string> LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+    public ModelFormContext<U> ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "Notifier")]
     public Func<ModelFormArgsInternal, Task> Notifier { get; set; }
