@@ -7,7 +7,7 @@
 {
     @if (MudModelFormTools.IsNumericType(PropertyInfo.PropertyType))
     {
-        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled"
+        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled" HelperText="@_fieldNotes"
                       @key="PropertyInfo.Name" @bind-Value="PropertyValue"
                       Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
             @GetFormattedValue()
@@ -15,7 +15,7 @@
     }
     else
     {
-        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled"
+        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled" HelperText="@_fieldNotes"
                       @key="PropertyInfo.Name" @bind-Value="PropertyValue"
                       Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
             @GetFormattedValue()
@@ -33,6 +33,7 @@ else
                           Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
                           MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
                           For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+                          HelperText="@_fieldNotes"
                           />
            
         }
@@ -47,6 +48,7 @@ else
                           Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 3)"
                           MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
                           For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+                          HelperText="@_fieldNotes"
                           />
         }
 }
@@ -71,6 +73,11 @@ else
     [CascadingParameter(Name = "LocalizerFunction")]
     public Func<string, string?> LocalizerFunction { get; set; } = null;
 
+    [CascadingParameter(Name = "ModelFormContext")]
+    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+
+    private string? _fieldNotes;
+
     private string localize(string input)
     {
         return LocalizerFunction is null ? input : (LocalizerFunction(input) ?? input);
@@ -84,6 +91,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
+        _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
     }
 
     private EventCallback<object> valueChangedCallback;

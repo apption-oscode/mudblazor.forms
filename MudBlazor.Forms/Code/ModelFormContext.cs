@@ -98,7 +98,7 @@ namespace MudBlazor.Forms
             categoryNotes.Add(category, notes);
         }
 
-        public void RegisterFieldNotes<P>(Expression<Func<P, string>> propertyPath, string notes)
+        public void RegisterFieldNotes<P>(Expression<Func<P, object>> propertyPath, string notes)
         {
             var propertyInfo = GetPropertyInfo(propertyPath);
             if (fieldNotes.ContainsKey(propertyInfo))
