@@ -3,8 +3,7 @@
 *@
 
 @inherits LayoutComponentBase
-@using Elemental.Code
-@using Elemental.Components
+
 
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -60,8 +59,7 @@
     private List<MudNavLinkData> _navLinks = new()
     {
         new MudNavLinkData { Label = "Home", To = "/", Icon = Icons.Filled.Home },
-        new MudNavLinkData { Label = "Basic Form", To = "/modelforms/basicform", Icon = Icons.Filled.DynamicForm },
-        new MudNavLinkData { Label = "Top Labels", To = "/modelforms/toplabelsform", Icon = Icons.Filled.FormatLineSpacing },
+        new MudNavLinkData { Label = "Basic Form", To = "/modelforms/basicform", Icon = Icons.Filled.DynamicForm },      
         new MudNavLinkData { Label = "Custom Labels", To = "/modelforms/customlabelsform", Icon = Icons.Filled.EditNote },
         new MudNavLinkData { Label = "Form With Categories", To = "/modelforms/formwithcategories", Icon = Icons.Filled.Category },
         new MudNavLinkData { Label = "Form With Outline", To = "/modelforms/formwithoutline", Icon = Icons.Filled.CheckBoxOutlineBlank },

@@ -19,11 +19,7 @@
     <UpToDateCheckBuilt Include="wwwroot/css/*.css" Set="Css" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="MudBlazor" Version="6.0.12" />
+  <ItemGroup>    
     <UpToDateCheckBuilt Remove="wwwroot\css\elemental-docs.min.css" />
   </ItemGroup>
 
