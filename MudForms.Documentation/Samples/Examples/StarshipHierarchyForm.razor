@@ -25,7 +25,9 @@
              OnChange="OnChange"
              CancelLabel="Cancel"             
              OnConfigure="OnConfigure"
-             OnCancel="CreateStarshipHierarchy" />
+             OnCancel="CreateStarshipHierarchy"
+             AreFieldsNullable="true"
+             />
 
 <DebugObject Object="@_starshipHierarchy"/>
 
@@ -40,7 +42,11 @@
 
     private async Task<StarshipHierarchy> CreateStarshipHierarchy()
     {
-        return await Task.FromResult(new StarshipHierarchy());
+        var starshipHierarchy = new StarshipHierarchy();
+        starshipHierarchy.StarshipSector = new() { Id = 1, ParentId = 0, LevelName = "Home Sector One" };
+        starshipHierarchy.StarshipBranch = new() { Id = 6, ParentId = 1, LevelName = "Sector One, Branch One" };
+        starshipHierarchy.StarshipDivision = new() { Id = 16, ParentId = 6, LevelName = "Sector One, Branch One, Division One" };
+        return await Task.FromResult(starshipHierarchy);
     }
 
 
@@ -55,9 +61,9 @@
     private void OnConfigure(IModelFormContext context)
     {
 
-        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipSector, p => p?.LevelName?? "N/A",() => GetStarshipSectors(), s => RefreshBranches(s, context));
-        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipBranch, p => p?.LevelName?? "N/A",() => GetStarshipBranches(), s => RefreshDivisions(s, context));
-        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipDivision, p => p?.LevelName?? "N/A",() => GetStarshipDivisions());
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipSector, p => p?.LevelName?? "-",() => GetStarshipSectors(), s => RefreshBranches(s, context));
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipBranch, p => p?.LevelName?? "-",() => GetStarshipBranches(), s => RefreshDivisions(s, context));
+        context.RegisterOptionValueProperty<StarshipHierarchy, StarshipLevel>(s => s.StarshipDivision, p => p?.LevelName?? "-",() => GetStarshipDivisions());
 
     }
 
@@ -130,7 +136,6 @@
 
         if (!_masterDivisions.Any())
         {
-            _masterDivisions.Add(null);
             _masterDivisions.Add(new() { Id = 16, ParentId = 6, LevelName = "Sector One, Branch One, Division One" });
             _masterDivisions.Add(new() { Id = 17, ParentId = 6, LevelName = "Sector One, Branch One, Division Two" });
             _masterDivisions.Add(new() { Id = 18, ParentId = 7, LevelName = "Sector One, Branch Two, Division One" });
@@ -143,11 +148,6 @@
             _masterDivisions.Add(new() { Id = 23, ParentId = 13, LevelName = "Sector Three, Branch One, Division One" });
             _masterDivisions.Add(new() { Id = 24, ParentId = 14, LevelName = "Sector Three, Branch Two, Division One" });
             _masterDivisions.Add(new() { Id = 25, ParentId = 14, LevelName = "Sector Three, Branch Two, Division Two" });
-        }
-
-        if (!_divisions.Any())
-        {
-            RefreshDivisions(null, null);
         }
 
         return _divisions;
