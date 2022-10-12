@@ -25,6 +25,7 @@ namespace MudForms.Documentation.Samples
         public StarshipLevel StarshipBranch { get; set; }
 
         [AeFormCategory("Hierarchy")]
+        [Editable(false)]
         [MudForm("Starship Branch", IsDropDown = true)]
         public StarshipLevel StarshipDivision { get; set; }
 

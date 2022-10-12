@@ -42,7 +42,11 @@
 
     private async Task<StarshipHierarchy> CreateStarshipHierarchy()
     {
-        return await Task.FromResult(new StarshipHierarchy());
+        var starshipHierarchy = new StarshipHierarchy();
+        starshipHierarchy.StarshipSector = new() { Id = 1, ParentId = 0, LevelName = "Home Sector One" };
+        starshipHierarchy.StarshipBranch = new() { Id = 6, ParentId = 1, LevelName = "Sector One, Branch One" };
+        starshipHierarchy.StarshipDivision = new() { Id = 16, ParentId = 6, LevelName = "Sector One, Branch One, Division One" };
+        return await Task.FromResult(starshipHierarchy);
     }
 
 
