@@ -24,33 +24,35 @@
 }
 else
 {
-        @if (MudModelFormTools.GetLineCount(PropertyInfo) is null)
-        {
-            <MudTextField @key="PropertyInfo.Name"
-                          @bind-Value="PropertyValue" 
-                          InputType="@TextFieldType"
-                          Label="@GetLabel()"
-                          Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
-                          MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
-                          For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
-                          HelperText="@_fieldNotes"
-                          />
-           
-        }
-        else
-        {
-            <MudTextField @key="PropertyInfo.Name" 
-                          @bind-Value="PropertyValue" 
-                          InputType="@TextFieldType"
-                          Label="@GetLabel()" 
-                          Variant="Variant.Text"
-                          Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
-                          Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 3)"
-                          MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
-                          For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
-                          HelperText="@_fieldNotes"
-                          />
-        }
+    @if(MudModelFormTools.IsPasswordField(PropertyInfo))
+    {
+        <MudTextField @key="PropertyInfo.Name"
+              @bind-Value="PropertyValue"
+              InputType="@PasswordInput"
+              Label="@GetLabel()"
+              Variant="Variant.Text"
+              Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
+              Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
+              Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" AdornmentAriaLabel="Show/Hide Password"
+              OnAdornmentClick="ToggleViewPassword" 
+              MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+              For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+              HelperText="@_fieldNotes" />
+    }
+    else
+    {
+        <MudTextField @key="PropertyInfo.Name" 
+            @bind-Value="PropertyValue" 
+            InputType="@TextFieldType"
+            Label="@GetLabel()" 
+            Variant="Variant.Text"
+            Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
+            Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
+            MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+            For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+            HelperText="@_fieldNotes"
+            />
+    }
 }
 
 @code {
@@ -77,6 +79,26 @@ else
     public ModelFormContext<T> ModelFormContext { get; set; } = null;
 
     private string? _fieldNotes;
+
+    private bool showPassword = false;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void ToggleViewPassword()
+    {
+        @if (showPassword)
+        {
+            showPassword = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            showPassword = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
 
     private string localize(string input)
     {
