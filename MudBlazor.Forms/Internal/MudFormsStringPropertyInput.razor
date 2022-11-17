@@ -3,56 +3,36 @@
 @using Microsoft.AspNetCore.Components.Forms
 @namespace MudBlazor.Forms
 
-@if (!PropertyInfo.IsEditable())
+@if(MudModelFormTools.IsPasswordField(PropertyInfo))
 {
-    @if (MudModelFormTools.IsNumericType(PropertyInfo.PropertyType))
-    {
-        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled" HelperText="@_fieldNotes"
-                      @key="PropertyInfo.Name" @bind-Value="PropertyValue"
-                      Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
-            @GetFormattedValue()
-        </MudTextField>
-    }
-    else
-    {
-        <MudTextField ReadOnly="true" InputType="@TextFieldType" Variant="Variant.Filled" HelperText="@_fieldNotes"
-                      @key="PropertyInfo.Name" @bind-Value="PropertyValue"
-                      Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))">
-            @GetFormattedValue()
-        </MudTextField>
-    }
+    <MudTextField @key="PropertyInfo.Name"
+            @bind-Value="PropertyValue"
+            InputType="@PasswordInput"
+            ReadOnly=!PropertyInfo.IsEditable()
+            Label="@GetLabel()"
+            Variant="Variant.Text"
+            Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
+            Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
+            Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" AdornmentAriaLabel="Show/Hide Password"
+            OnAdornmentClick="ToggleViewPassword" 
+            MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+            For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+            HelperText="@_fieldNotes" />
 }
 else
 {
-    @if(MudModelFormTools.IsPasswordField(PropertyInfo))
-    {
-        <MudTextField @key="PropertyInfo.Name"
-              @bind-Value="PropertyValue"
-              InputType="@PasswordInput"
-              Label="@GetLabel()"
-              Variant="Variant.Text"
-              Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
-              Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
-              Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" AdornmentAriaLabel="Show/Hide Password"
-              OnAdornmentClick="ToggleViewPassword" 
-              MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
-              For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
-              HelperText="@_fieldNotes" />
-    }
-    else
-    {
-        <MudTextField @key="PropertyInfo.Name" 
-            @bind-Value="PropertyValue" 
-            InputType="@TextFieldType"
-            Label="@GetLabel()" 
-            Variant="Variant.Text"
-            Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
-            Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
-            MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
-            For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
-            HelperText="@_fieldNotes"
-            />
-    }
+    <MudTextField @key="PropertyInfo.Name" 
+        @bind-Value="PropertyValue" 
+        InputType="@TextFieldType"
+        ReadOnly=!PropertyInfo.IsEditable()
+        Label="@GetLabel()" 
+        Variant="Variant.Text"
+        Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
+        Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
+        MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
+        For="@(MudModelFormTools.GetExpression<string>(Instance, PropertyInfo))"
+        HelperText="@_fieldNotes"
+        />
 }
 
 @code {
