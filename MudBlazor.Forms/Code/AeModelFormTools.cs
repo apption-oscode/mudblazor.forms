@@ -149,10 +149,6 @@ namespace MudBlazor.Forms
                     label = Labelize(propertyInfo.Name);
                 }
             }
-            if (includeOptional && !IsRequired(propertyInfo))
-                return label + " (Optional)";
-            if (IsRequired(propertyInfo))
-                return label + "*";
             return label;
         }
 
