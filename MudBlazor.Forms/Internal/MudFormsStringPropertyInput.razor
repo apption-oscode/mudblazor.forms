@@ -11,7 +11,7 @@
         ReadOnly=!PropertyInfo.IsEditable()
         Class="@RequiredClass"
         Label="@GetLabel()"
-        Variant="Variant.Text"
+        Variant="@Variant"
         Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))"
         Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
         Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" AdornmentAriaLabel="Show/Hide Password"
@@ -28,7 +28,7 @@ else
         ReadOnly=!PropertyInfo.IsEditable()
         Class="@RequiredClass"
         Label="@GetLabel()" 
-        Variant="Variant.Text"
+        Variant="@Variant"
         Placeholder="@localize(MudModelFormTools.GetPlaceHolder(PropertyInfo))" 
         Lines="@(MudModelFormTools.GetLineCount(PropertyInfo) ?? 1)"
         MaxLength="@(MudModelFormTools.GetSize(PropertyInfo) ?? 524288)"
@@ -69,6 +69,9 @@ else
 
     [CascadingParameter(Name = "ModelFormContext")]
     public ModelFormContext<T> ModelFormContext { get; set; } = null;
+
+    [CascadingParameter(Name = "Variant")]
+    public Variant Variant { get; set; }
 
     private bool IsRequired => MudModelFormTools.IsRequired(PropertyInfo);
 
