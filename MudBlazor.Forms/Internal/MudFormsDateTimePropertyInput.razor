@@ -4,7 +4,7 @@
 
 @if(IsEditable)
 {
-    <MudDatePicker Label="@GetLabel()" @bind-Date="PropertyValue" Placeholder="Select Date localizeme" HelperText="@_fieldNotes"/>
+    <MudDatePicker Label="@GetLabel()" @bind-Date="PropertyValue" Variant="@Variant" Placeholder="Select Date" HelperText="@_fieldNotes" />
 }
 else
 {
@@ -47,6 +47,9 @@ else
 
     [CascadingParameter(Name = "ModelFormContext")]
     public ModelFormContext<T> ModelFormContext { get; set; } = null;
+
+    [CascadingParameter(Name = "Variant")]
+    public Variant Variant { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

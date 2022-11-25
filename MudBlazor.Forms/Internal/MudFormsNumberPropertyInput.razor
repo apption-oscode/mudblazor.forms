@@ -5,14 +5,13 @@
 @namespace MudBlazor.Forms
 
 <MudNumericField T=S @bind-Value="PropertyValue" 
-        Label="@GetLabel()" Variant="Variant.Text"
+        Label="@GetLabel()" 
+        Variant="@Variant"
         For="@(MudModelFormTools.GetExpression<S>(Instance,PropertyInfo))"
         ReadOnly="@IsDisabled"
         Format="@_format"
         Pattern="@_pattern"
-        HelperText="@_fieldNotes" 
-        />
-
+        HelperText="@_fieldNotes" />
 
 @code {
     [Parameter]
@@ -28,6 +27,9 @@
 
     [Parameter]
     public object Instance { get; set; }
+
+    [CascadingParameter(Name = "Variant")]
+    public Variant Variant { get; set; }
 
     private string _pattern = @"[0-9,.\-]";
 

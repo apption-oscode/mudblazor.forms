@@ -81,72 +81,74 @@
                                             <CascadingValue Value="@_notifyArg" Name="Notifier">
                                                 <CascadingValue Value="@LabelsOnTop" Name="LabelsOnTop">
                                                     <CascadingValue Value="@AreFieldsNullable" Name="AreFieldsNullable">
-                                                        @if (IsReadOnly || isCategoryLocked)
-                                                        {
-                                                            <MudFormsPropertyValueDisplay PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                        }
-                                                        else
-                                                        {
-                                                            if (ModelFormContext.IsDropDown(prop))
+                                                        <CascadingValue Value="@Variant" Name="Variant">
+                                                            @if (IsReadOnly || isCategoryLocked)
                                                             {
-                                                                <MudFormsDropdownPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                <MudFormsPropertyValueDisplay PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
                                                             }
                                                             else
                                                             {
-                                                                if (GetNonNullableType(prop) == typeof(string))
+                                                                if (ModelFormContext.IsDropDown(prop))
                                                                 {
-                                                                    <MudFormsStringPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    <MudFormsDropdownPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
                                                                 }
-                                                                if (prop.PropertyType == typeof(int))
+                                                                else
                                                                 {
-                                                                    <MudFormsNumberPropertyInput S=int U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                if (prop.PropertyType == typeof(long))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=long U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                if (prop.PropertyType == typeof(float))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=float U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                if (prop.PropertyType == typeof(double))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=double U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (prop.PropertyType == typeof(Decimal))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=Decimal U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle" />
-                                                                }
-                                                                @if (prop.PropertyType == typeof(int?))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=int? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (prop.PropertyType == typeof(long?))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=long? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (prop.PropertyType == typeof(float?))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=float? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (prop.PropertyType == typeof(double?))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=double? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (prop.PropertyType == typeof(Decimal?))
-                                                                {
-                                                                    <MudFormsNumberPropertyInput S=Decimal? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (GetNonNullableType(prop) == typeof(bool))
-                                                                {
-                                                                    <MudFormsBoolPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
-                                                                }
-                                                                @if (GetNonNullableType(prop) == typeof(DateTime))
-                                                                {
-                                                                    <MudFormsDateTimePropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    if (GetNonNullableType(prop) == typeof(string))
+                                                                    {
+                                                                        <MudFormsStringPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    if (prop.PropertyType == typeof(int))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=int U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    if (prop.PropertyType == typeof(long))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=long U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    if (prop.PropertyType == typeof(float))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=float U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    if (prop.PropertyType == typeof(double))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=double U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(Decimal))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=Decimal U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle" />
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(int?))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=int? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(long?))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=long? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(float?))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=float? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(double?))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=double? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (prop.PropertyType == typeof(Decimal?))
+                                                                    {
+                                                                        <MudFormsNumberPropertyInput S=Decimal? U=T PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (GetNonNullableType(prop) == typeof(bool))
+                                                                    {
+                                                                        <MudFormsBoolPropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
+                                                                    @if (GetNonNullableType(prop) == typeof(DateTime))
+                                                                    {
+                                                                        <MudFormsDateTimePropertyInput PropertyInfo="prop" Instance="Model" ModelFormStyle="ModelFormStyle"/>
+                                                                    }
                                                                 }
                                                             }
-                                                        }
+                                                        </CascadingValue>
                                                     </CascadingValue>
                                                 </CascadingValue>
                                             </CascadingValue>
@@ -210,7 +212,7 @@
     protected override void OnAfterRender(bool firstRender)
     {
         if (!firstRender) return;
-        
+
         if (EnableOutline && _contentNavigation != null)
         {
             foreach (var category in ModelFormContext.GetCategories())
@@ -332,6 +334,9 @@
 
     [Parameter]
     public string? UncheckedIcon { get; set; }
+
+    [Parameter]
+    public Variant Variant { get; set; } = Variant.Text;
 
     private bool _isCancelled = false;
 

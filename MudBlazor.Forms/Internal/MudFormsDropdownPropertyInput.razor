@@ -11,7 +11,7 @@
 
 @if (ValidDisplayValues != null)
 {
-    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex" HelperText="@_fieldNotes" Disabled="@IsDisabled">
+    <MudSelect @key="PropertyInfo.Name" T="int" Variant="@Variant" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex" HelperText="@_fieldNotes" Disabled="@IsDisabled">
         @if (!MudModelFormTools.IsRequired(PropertyInfo))
         {
             <MudSelectItem @key="@GetKey(NO_VALUE)" Value="@NO_VALUE">@localize(GetPlaceholder())</MudSelectItem>
@@ -25,7 +25,7 @@
 }
 else
 {
-    <MudSelect @key="PropertyInfo.Name" T="int" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex" Disabled="@IsDisabled">
+    <MudSelect @key="PropertyInfo.Name" T="int" Variant="@Variant" Label="@GetLabel()" AnchorOrigin="Origin.BottomCenter" @bind-Value="InputSelectIndex" Disabled="@IsDisabled">
         @if (!MudModelFormTools.IsRequired(PropertyInfo))
         {
             <MudSelectItem @key="GetKey(NO_VALUE)" Value="@NO_VALUE" Disabled=true>-</MudSelectItem>
@@ -53,6 +53,9 @@ else
 
     [CascadingParameter(Name = "AreFieldsNullable")]
     public bool AreFieldsNullable { get; set; } = false;
+    
+    [CascadingParameter(Name = "Variant")]
+    public Variant Variant { get; set; }
 
     private bool IsDisabled => !PropertyInfo.IsEditable();
 
