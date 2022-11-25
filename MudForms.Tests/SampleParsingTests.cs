@@ -17,7 +17,7 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             
             Assert.NotNull(lines);
-            Assert.Equal(71, lines.Count());
+            Assert.Equal(72, lines.Count());
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Elemental.Tests
             var lines = ParsedFile.ReadLines(_testFilePath);
             var html = ParsedFile.ParseHtml(lines);
 
-            Assert.Equal(11, html.Count);
+            Assert.Equal(12, html.Count);
             Assert.Contains(@"<MudModelForm", html.First());
             Assert.Contains(@"/>", html.Last());
         }
