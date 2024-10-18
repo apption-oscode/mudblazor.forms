@@ -5,11 +5,11 @@
 @*<MudField Label="@GetLabel()">*@
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
-    <MudCheckBox T=bool? TriState="true" @bind-Checked="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
+    <MudCheckBox T=bool? TriState="true" @bind-Value="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
 }
 else
 {
-    <MudCheckBox T=bool @bind-Checked="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))"/>
+    <MudCheckBox T=bool @bind-Value="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))"/>
 }
 @*</MudField>*@
 
