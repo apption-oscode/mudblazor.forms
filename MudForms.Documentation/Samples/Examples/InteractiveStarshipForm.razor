@@ -17,10 +17,12 @@
     Description: This sample uses Category annotations to group and order the different form elements into categories
 *@
 
-@using Elemental.Components
 
-<AeFlex><AeCheckbox @bind-IsChecked="submitEnabled"/>Enable Form</AeFlex>
-<AeButton OnClickEvent="LoadShip2">Load Starship2</AeButton>
+
+<MudPaper Class="d-flex pa-4">
+    <MudCheckBox @bind-Value="submitEnabled" Disabled="true">Enable Form</MudCheckBox>
+</MudPaper>
+<MudButton OnClick="LoadShip2">Load Starship2</MudButton>
 <MudModelForm T="InteractiveStarship"
              Model="@_starship"
              SubmitLabel="Save changes"

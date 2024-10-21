@@ -40,7 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Elemental\Elemental.csproj" />
 		<ProjectReference Include="..\MudBlazor.Forms\MudBlazor.Forms.csproj" />
 	</ItemGroup>
 

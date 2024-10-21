@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -12,7 +12,7 @@
 		<Company>Apption</Company>
 		<Product>MudBlazor Model Form</Product>
 		<Description>MudBlazor.Forms is a library built on top of MudBlazor for creating responsive, dynamic, and highly customizable forms in Blazor applications. Simplifies form handling, validation, and binding, offering a clean and efficient way to work with structured data inputs in Blazor.</Description>
-		<Copyright>Copyright Apption 2022</Copyright>
+		<Copyright>Copyright Apption 2024</Copyright>
 		<PackageReadmeFile>../README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/apption-oscode/elemental-blazor</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/apption-oscode/elemental-blazor</RepositoryUrl>
@@ -29,7 +29,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="6.0.*" />
+    <PackageReference Include="MudBlazor" Version="7.13.*" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
 
   </ItemGroup>

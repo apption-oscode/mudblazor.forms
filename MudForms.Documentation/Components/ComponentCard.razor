@@ -1,11 +1,10 @@
-@using Elemental.Components
 @inject NavigationManager NavigationManager
 
-<AeFlex @onclick="HandleClick" class="component-card">
+<MudPaper Class="d-flex pa-4">
   <img src="@ImageUrl" />
   
-  <AeTypography class="text">@Title</AeTypography>
-</AeFlex>
+  <MudText>@Title</MudText>
+</MudPaper>
 
 @code {
 
