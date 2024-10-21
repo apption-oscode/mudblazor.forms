@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -28,8 +28,8 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="6.0.*" />
-    <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="MudBlazor" Version="7.13.0" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
 
   </ItemGroup>
 

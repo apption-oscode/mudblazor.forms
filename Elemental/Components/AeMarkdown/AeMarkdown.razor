@@ -45,7 +45,7 @@
     public string RenderHTML()
     {
         var writer = new StringWriter();
-        var renderer = new HtmlRenderer(writer);
+        var renderer = new Markdig.Renderers.HtmlRenderer(writer);
         renderer.LinkRewriter = LinkRewriter;
         _pipeline.Setup(renderer);
         var doc = Markdown.Parse(Content, _pipeline);// ToHtml(testMD, _pipeline);
