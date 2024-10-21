@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines-devel.yml = azure-pipelines-devel.yml
 		azure-pipelines-master.yml = azure-pipelines-master.yml
+		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elemental.FormBuilder", "Elemental.FormBuilder\Elemental.FormBuilder.csproj", "{E5D2C43C-DB91-420B-A70B-AADC38A100E3}"

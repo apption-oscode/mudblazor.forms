@@ -13,7 +13,7 @@
 		<Product>MudBlazor Model Form</Product>
 		<Description>MudBlazor.Forms is a library built on top of MudBlazor for creating responsive, dynamic, and highly customizable forms in Blazor applications. Simplifies form handling, validation, and binding, offering a clean and efficient way to work with structured data inputs in Blazor.</Description>
 		<Copyright>Copyright Apption 2022</Copyright>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReadmeFile>../README.md</PackageReadmeFile>
 		<PackageProjectUrl>https://github.com/apption-oscode/elemental-blazor</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/apption-oscode/elemental-blazor</RepositoryUrl>
 		<PackageTags>c# blazor</PackageTags>
