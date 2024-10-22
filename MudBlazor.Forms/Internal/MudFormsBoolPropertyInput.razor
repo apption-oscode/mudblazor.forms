@@ -5,18 +5,20 @@
 @*<MudField Label="@GetLabel()">*@
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
-    <MudCheckBox T=bool? TriState="true" @bind-Value="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance,PropertyInfo))" />
+    <MudCheckBox T=bool? TriState="true" @bind-Value="PropertyValueNullable" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool?>(Instance!,PropertyInfo))" />
 }
 else
 {
-    <MudCheckBox T=bool @bind-Value="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance,PropertyInfo))"/>
+    <MudCheckBox T=bool @bind-Value="PropertyValue" Label="@GetLabel()" For="@(MudModelFormTools.GetExpression<bool>(Instance!,PropertyInfo))"/>
 }
 @*</MudField>*@
 
 @code {
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
 
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+    [Parameter, EditorRequired]
+    public T Instance { get; set; } = default!;
 
     /// <summary>
     /// There are two major layout options. Standard has line based with label / field and compact has a tabular layout with CSS flex.
@@ -27,10 +29,10 @@ else
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name= "LabelForPropertyFunc")]
-    public Func<string,string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string,string>? LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "Notifier")]
-    public Func<ModelFormArgsInternal, Task> Notifier { get; set; }
+    public Func<ModelFormArgsInternal, Task>? Notifier { get; set; }
 
     private string GetLabel()
     {
@@ -40,18 +42,19 @@ else
     protected override async Task OnInitializedAsync()
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
+        await Task.CompletedTask;
     }
 
     private EventCallback<object> valueChangedCallback;
 
     private async Task OnValueChanged(object value)
     {
-        var changeArgs = new ModelFormArgsInternal() { PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) };
-        await Notifier(changeArgs);
+        if (Notifier is not null)
+        {
+            var changeArgs = new ModelFormArgsInternal(PropertyInfo);
+            await Notifier(changeArgs);
+        }
     }
-
-    [Parameter]
-    public T Instance { get; set; }
 
     public bool? PropertyValueNullable
     {

@@ -62,7 +62,7 @@
                         <MudText Typo="Typo.subtitle2">@ModelFormContext.GetCategoryNote(category.category)</MudText>
                         @if (IsSectionLocksVisible)
                         {
-                            <MudCheckBox T=bool Checked="isCategoryLocked" CheckedChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))" CheckedIcon="@CheckedIcon" UncheckedIcon="@UncheckedIcon">@Localize("Lock Section") </MudCheckBox>
+                            <MudCheckBox T=bool Value="isCategoryLocked" ValueChanged="(async isCheck => await HandleCategoryLock(isCheck, category.category))">@Localize("Lock Section") </MudCheckBox>
                         }
                     </MudStack>
                 }
@@ -178,7 +178,6 @@
 
 @code {
     private bool _isConfigured = false;
-    private EditContext? _editContext;
 
     [Parameter]
     public bool IsSubmitEnabled { get; set; } = true;
@@ -379,7 +378,7 @@
 
     private async Task OnNotify(ModelFormArgsInternal internalArgs)
     {
-        var args = new ModelFormChangeArgs { Context = ModelFormContext, PropertyInfo = internalArgs.PropertyInfo, EditContext = internalArgs.EditContext };
+        var args = new ModelFormChangeArgs(internalArgs, ModelFormContext);
         await OnChange.InvokeAsync(args);
         await InvokeAsync(StateHasChanged);
     }

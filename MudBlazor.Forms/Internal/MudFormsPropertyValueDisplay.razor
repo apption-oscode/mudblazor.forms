@@ -5,12 +5,11 @@
 <MudField Label="@GetLabel()" Variant=@Variant HelperText="@_fieldNotes">@GetFormattedValue()</MudField>
 
 @code {
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
 
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
-
-    [Parameter]
-    public T Instance { get; set; }
+    [Parameter, EditorRequired]
+    public T Instance { get; set; } = default!;
 
     [Parameter] public ModelFormStyle ModelFormStyle { get; set; }
 
@@ -21,13 +20,13 @@
     [Parameter] public string NullValue { get; set; } = "-";
 
     [CascadingParameter(Name = "LabelForPropertyFunc")]
-    public Func<string, string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string, string>? LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+    public ModelFormContext<T>? ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "LocalizerFunction")]
-    public Func<string, string?> LocalizerFunction { get; set; } = null;
+    public Func<string, string?>? LocalizerFunction { get; set; } = null;
 
     [CascadingParameter(Name = "Variant")]
     public Variant Variant { get; set; }
@@ -37,6 +36,7 @@
     protected override async Task OnInitializedAsync()
     {
         _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
+        await Task.CompletedTask;
     }
 
     public string PropertyValue
@@ -67,7 +67,7 @@
             {
                 return b ? Localize(TrueValue) : Localize(FalseValue);   
             }
-            return Localize(ModelFormContext.GetDisplayValue(PropertyInfo, Instance));            
+            return Localize(ModelFormContext?.GetDisplayValue(PropertyInfo, Instance) ?? NullValue);    
         }
         else
         {

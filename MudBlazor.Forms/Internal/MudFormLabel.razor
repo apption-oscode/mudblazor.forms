@@ -20,11 +20,12 @@ else
 }
 
 @code {
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
 
-    [Parameter]
-    public T Instance { get; set; }
+    [Parameter, EditorRequired]
+    public T Instance { get; set; } = default!;
+
     /// <summary>
     /// There are two major layout options. Standard has line based with label / field and compact has a tabular layout with CSS flex.
     /// </summary>
@@ -56,10 +57,10 @@ else
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name= "LabelForPropertyFunc")]
-    public Func<string,string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string,string>? LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+    public ModelFormContext<T>? ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "LabelsOnTop")]
     public bool LabelsOnTop { get; set; } = false;

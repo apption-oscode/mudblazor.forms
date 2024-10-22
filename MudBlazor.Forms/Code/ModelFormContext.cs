@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace MudBlazor.Forms
 {
-    public class ModelFormArgsInternal
+    public class ModelFormArgsInternal(PropertyInfo propertyInfo)
     {
-        public PropertyInfo PropertyInfo { get; set; }
-        public EditContext EditContext { get; set; }
+        public PropertyInfo PropertyInfo { get; set; } = propertyInfo;
+        public EditContext EditContext { get; set; } = new EditContext(propertyInfo);
 
         public bool HasPropertyChanged<T>(Expression<Func<T, object>> expression)
         {
@@ -22,12 +22,12 @@ namespace MudBlazor.Forms
         }
     }
 
-    public class ModelFormChangeArgs
+    public class ModelFormChangeArgs(ModelFormArgsInternal internalArgs, IModelFormContext modelFormContext)
     {
-        public PropertyInfo PropertyInfo { get; set; }
-        public EditContext EditContext { get; set; }
+        public PropertyInfo PropertyInfo { get; set; } = internalArgs.PropertyInfo;
+        public EditContext EditContext { get; set; } = internalArgs.EditContext;
 
-        public IModelFormContext Context { get; set; }
+        public IModelFormContext Context { get; set; } = modelFormContext;
 
         public bool HasPropertyChanged<T>(Expression<Func<T, object>> expression)
         {
@@ -37,14 +37,14 @@ namespace MudBlazor.Forms
 
     public class ModelFormContext<T> : IModelFormContext
     {
-        private Dictionary<PropertyInfo, (Delegate Label, Delegate Choices, Delegate onChange)> optionProperties = new Dictionary<PropertyInfo, (Delegate, Delegate, Delegate)>();
-        private Dictionary<PropertyInfo, (MudFormsDropdownPropertyInput<T> component, Action updateOptions)> optionPropertyComponent = new Dictionary<PropertyInfo, (MudFormsDropdownPropertyInput<T>, Action)>();
-        private Dictionary<PropertyInfo, string> fieldNotes = new Dictionary<PropertyInfo, string>();
-        private Dictionary<string, string> categoryNotes = new Dictionary<string, string>();
+        private Dictionary<PropertyInfo, (Delegate Label, Delegate Choices, Delegate? onChange)> optionProperties = [];
+        private Dictionary<PropertyInfo, (MudFormsDropdownPropertyInput<T> component, Action updateOptions)> optionPropertyComponent = [];
+        private readonly Dictionary<PropertyInfo, string> fieldNotes = [];
+        private readonly Dictionary<string, string> categoryNotes = [];
         internal ILogger? Logger { get; set; }
-        private List<string> categoryLocks = new List<string>();
-        public Func<Task> RefreshModel { get; set; }
-        public List<PropertyInfo> Properties { get; private set; }
+        private readonly List<string> categoryLocks = [];
+        public Func<Task>? RefreshModel { get; set; }
+        public List<PropertyInfo> Properties { get; private set; } = [];
 
         public List<(string category, List<List<PropertyInfo>> properties)> GetCategories() =>
             typeof(T).GetMudModelFormCategories().Select(elem => (string.IsNullOrWhiteSpace(elem.category) ? string.Empty : elem.category,
@@ -108,12 +108,12 @@ namespace MudBlazor.Forms
             fieldNotes.Add(propertyInfo, notes);
         }
 
-        public void RegisterOptionValueProperty(PropertyInfo property, Func<IEnumerable<string>> choices, Action<string> onChange = null)
+        public void RegisterOptionValueProperty(PropertyInfo property, Func<IEnumerable<string>> choices, Action<string>? onChange = null)
         {
             RegisterOptionValueProperty(property, e => e, choices, onChange);
         }
 
-        public void RegisterOptionValueProperty(Expression<Func<T, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string> onChange = null)
+        public void RegisterOptionValueProperty(Expression<Func<T, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string>? onChange = null)
         {
             RegisterOptionValueProperty<string>(propertyPath, e => e, choices, onChange);
         }
@@ -123,22 +123,22 @@ namespace MudBlazor.Forms
             return MudModelFormTools.WithPropertyExpression(expression);
         }
 
-        public void RegisterOptionValueProperty<P>(Expression<Func<P, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string> onChange = null)
+        public void RegisterOptionValueProperty<P>(Expression<Func<P, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string>? onChange = null)
         {
             RegisterOptionValueProperty(GetPropertyInfo(propertyPath), e => e, choices, onChange);
         }
 
-        public void RegisterOptionValueProperty<P1, P2>(Expression<Func<P1, P2>> propertyPath, Func<P2, string> label, Func<IEnumerable<P2>> choices, Action<P2> onChange = null)
+        public void RegisterOptionValueProperty<P1, P2>(Expression<Func<P1, P2>> propertyPath, Func<P2, string> label, Func<IEnumerable<P2>> choices, Action<P2>? onChange = null)
         {
             RegisterOptionValueProperty(GetPropertyInfo(propertyPath), label, choices, onChange);
         }
 
-        public void RegisterOptionValueProperty<S>(Expression<Func<T, S>> propertyPath, Func<S, string> label, Func<IEnumerable<S>> choices, Action<S> onChange = null)
+        public void RegisterOptionValueProperty<S>(Expression<Func<T, S>> propertyPath, Func<S, string> label, Func<IEnumerable<S>> choices, Action<S>? onChange = null)
         {
             RegisterOptionValueProperty(GetPropertyInfo(propertyPath), label, choices, onChange);
         }
 
-        public void RegisterOptionValueProperty<S>(PropertyInfo property, Func<S, string> label, Func<IEnumerable<S>> choices, Action<S> onChange = null)
+        public void RegisterOptionValueProperty<S>(PropertyInfo property, Func<S, string> label, Func<IEnumerable<S>> choices, Action<S>? onChange = null)
         {
             if (property is null)
             {
@@ -173,11 +173,14 @@ namespace MudBlazor.Forms
 
         public bool IsDropDown(PropertyInfo propertyInfo)
         {
-            var hasValidValues = MudFormAttribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
-                ? (MudFormAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute).ValidValues?.Length > 0
+            var attributeIsDefined = Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute));
+            var customAttribute = Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute;
+            
+            var hasValidValues = attributeIsDefined
+                ? customAttribute?.ValidValues?.Length > 0
                 : optionProperties.ContainsKey(propertyInfo);
-            var hasDropDown = MudFormAttribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
-                ? (MudFormAttribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute).IsDropDown
+            var hasDropDown = attributeIsDefined
+                ? customAttribute?.IsDropDown ?? false
                 : false;
             return hasValidValues || hasDropDown;
         }
@@ -237,7 +240,7 @@ namespace MudBlazor.Forms
             if (optionProperties.TryGetValue(propertyInfo, out var accessors))
             {
                 var validValues = accessors.Choices.DynamicInvoke() as IEnumerable;
-                if (validValues == null) return (null, null);
+                if (validValues == null) return ([], []);
                 var displayValues = new List<string>();
                 var values = new List<object>();
                 foreach (var item in validValues)
@@ -256,10 +259,10 @@ namespace MudBlazor.Forms
         public void Clear()
         {
             RefreshModel = null;
-            Properties = null;
-            optionProperties = null;
-            optionPropertyComponent = null;
-            propertyVisibility = null;
+            Properties = [];
+            optionProperties = [];
+            optionPropertyComponent = [];
+            propertyVisibility = [];
         }
 
         public PropertyInfo GetProperty(string name)
