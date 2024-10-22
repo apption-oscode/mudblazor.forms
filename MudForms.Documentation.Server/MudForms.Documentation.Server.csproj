@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Elemental.Theme\Elemental.Theme.csproj" />
     <ProjectReference Include="..\MudForms.Documentation\MudForms.Documentation.csproj" />
   </ItemGroup>
 

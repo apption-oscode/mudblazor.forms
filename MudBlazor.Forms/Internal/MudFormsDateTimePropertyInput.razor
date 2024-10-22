@@ -14,39 +14,38 @@ else
 @if (MudModelFormTools.IsNullable(PropertyInfo))
 {
     <div class="errortext">
-        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime?>(Instance,PropertyInfo))" />
+        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime?>(Instance!,PropertyInfo))" />
     </div>
 }
 else
 {
     <div class="errortext">
-        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime>(Instance,PropertyInfo))" />
+        <Microsoft.AspNetCore.Components.Forms.ValidationMessage For="@(MudModelFormTools.GetExpression<DateTime>(Instance!,PropertyInfo))" />
     </div>    
 }
 
 
 @code {
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
 
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+    [Parameter, EditorRequired]
+    public T Instance { get; set; } = default!;
 
     /// <summary>
     /// There are two major layout options. Standard has line based with label / field and compact has a tabular layout with CSS flex.
     /// </summary>
     [Parameter] public ModelFormStyle ModelFormStyle { get; set; }
-
-    [Parameter]
-    public T Instance { get; set; }
-
     private string? _fieldNotes;
+
     /// <summary>
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name= "LabelForPropertyFunc")]
-    public Func<string,string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string,string>? LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+    public ModelFormContext<T>? ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "Variant")]
     public Variant Variant { get; set; }
@@ -54,7 +53,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
+        await Task.CompletedTask;
     }
+
     private bool IsEditable => PropertyInfo.IsEditable();
     
     private string GetLabel()
@@ -64,7 +65,7 @@ else
 
     public DateTime? PropertyValue
     {
-        get => MudModelFormTools.AsNullableValue<DateTime>(PropertyInfo,Instance);
+        get => MudModelFormTools.AsNullableValue<DateTime>(PropertyInfo,Instance!);
         set
         {
             PropertyInfo.SetValue(Instance, value);

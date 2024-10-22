@@ -9,7 +9,7 @@ namespace MudBlazor.Forms
     {
         void Clear();
 
-        string GetDisplayValue(PropertyInfo propertyInfo, object item);
+        string? GetDisplayValue(PropertyInfo propertyInfo, object item);
 
         (List<object> values, List<string> labels) GetOptionValuesForProperty(PropertyInfo propertyInfo);
 
@@ -27,11 +27,11 @@ namespace MudBlazor.Forms
 
         void SetVisible(PropertyInfo property, bool isVisible);
 
-        void RegisterOptionValueProperty<T>(Expression<Func<T, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string> onChange = null);
+        void RegisterOptionValueProperty<T>(Expression<Func<T, string>> propertyPath, Func<IEnumerable<string>> choices, Action<string>? onChange = null);
 
-        void RegisterOptionValueProperty(PropertyInfo property, Func<IEnumerable<string>> choices, Action<string> onChange = null);
+        void RegisterOptionValueProperty(PropertyInfo property, Func<IEnumerable<string>> choices, Action<string>? onChange = null);
 
-        void RegisterOptionValueProperty<P1, P2>(Expression<Func<P1, P2>> propertyPath, Func<P2, string> label, Func<IEnumerable<P2>> choices, Action<P2> onChange = null);
+        void RegisterOptionValueProperty<P1, P2>(Expression<Func<P1, P2>> propertyPath, Func<P2, string> label, Func<IEnumerable<P2>> choices, Action<P2>? onChange = null);
 
         void RegisterFieldNotes<P>(Expression<Func<P, object>> propertyPath, string notes);
 

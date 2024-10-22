@@ -1,36 +1,36 @@
 ﻿@page "/components"
 
 @using System.Linq;
-@using Elemental.Components
 
-<AeFlex class="component-landing-container">
-	<AeTypography Variant="h2">Components</AeTypography>
-	<AeTypography>Components are the reusable building blocks of AElemental. Each component meets a specific interaction or UI need and has been specifically created to work together to create patterns and intuitive user experiences.</AeTypography>
+
+<MudPaper class="component-landing-container">
+	<MudText Variant="h2">Components</MudText>
+	<MudText>Components are the reusable building blocks of AElemental. Each component meets a specific interaction or UI need and has been specifically created to work together to create patterns and intuitive user experiences.</MudText>
 
 	<AeSearchInput class="search" Placeholder="Search components by name" OnInputChange="HandleSearch" EventTimer="1" />
 
 
 	@if(_isLoading){
-		<AeSpinner Spinner="Spinner.Type5" style="margin: auto;"/>
+		<MudProgressCircular Color="Color.Default" Indeterminate="true" />
 	}
 	else {
-		<AeFlex class="card-container">
+		<MudPaper class="card-container">
 			@foreach(var component in _components){
 				<ComponentCard Title="@component.Title" ImageUrl="@component.ImageUrl" Url="@component.Url" />
 			}
 
 			@if (!_components.Any())
 			{
-				<AeFlex class="empty">
+				<MudPaper class="empty">
 					<AeIcon Icon="git-branch"></AeIcon>
-					<AeTypography class="title">Don't see the component you're looking for?</AeTypography>
-					<AeTypography Variant="a" href="https://github.com/apption-oscode/elemental-blazor" class="subtitle">Come make it with us!</AeTypography>
-				</AeFlex>
+					<MudText class="title">Don't see the component you're looking for?</MudText>
+					<MudText Variant="a" href="https://github.com/apption-oscode/elemental-blazor" class="subtitle">Come make it with us!</MudText>
+				</MudPaper>
 			}
-		</AeFlex>
+		</MudPaper>
 	}
 
-</AeFlex>
+</MudPaper>
 
 
 @code {

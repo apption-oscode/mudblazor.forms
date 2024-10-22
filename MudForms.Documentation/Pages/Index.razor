@@ -17,7 +17,7 @@
 
 @page "/"
 @inherits DemoPage
-@using Elemental.Components
+
 
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
@@ -32,7 +32,7 @@
         <MudText>To install with the dotnet CLI you can open your terminal and add the package to your project</MudText>
         <pre style="margin: 0"><code class="language-shell">$ dotnet add package MudBlazor.ModelForms</code></pre>
         <MudText>Once you've installed the package to your project you need to add the import to your <code>_Imports.razor</code> file</MudText>
-        <pre style="margin: 0"><code class="language-csharp">@@using Elemental.Components</code></pre>
+        <pre style="margin: 0"><code class="language-csharp">@@using MudBlazor.Forms</code></pre>
 
         <MudText>And finally add the following line in your <code>Startup.cs</code> under <code>ConfigureServices</code></MudText>
         <pre style="margin: 0"><code class="language-csharp">services.AddElemental()</code></pre>

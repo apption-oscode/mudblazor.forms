@@ -48,9 +48,8 @@ else
 </style>
 
 @code {
-
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
 
     [Parameter, EditorRequired]
     public T? Instance { get; set; }
@@ -62,13 +61,13 @@ else
     public bool Editable { get; set; } = true;
 
     [CascadingParameter(Name = "Notifier")]
-    public Func<ModelFormArgsInternal, Task> Notifier { get; set; }
+    public Func<ModelFormArgsInternal, Task>? Notifier { get; set; }
 
     [CascadingParameter(Name = "LocalizerFunction")]
-    public Func<string, string?> LocalizerFunction { get; set; } = null;
+    public Func<string?, string?>? LocalizerFunction { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<T> ModelFormContext { get; set; } = null;
+    public ModelFormContext<T>? ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "Variant")]
     public Variant Variant { get; set; }
@@ -99,7 +98,7 @@ else
         }
     }
 
-    private string localize(string input)
+    private string? localize(string? input)
     {
         return LocalizerFunction is null ? input : (LocalizerFunction(input) ?? input);
     }
@@ -113,14 +112,18 @@ else
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
         _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
+        await Task.CompletedTask;
     }
 
     private EventCallback<object> valueChangedCallback;
 
     private async Task OnValueChanged(object value)
     {
-        var changeArgs = new ModelFormArgsInternal() { PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) };
-        await Notifier(changeArgs);
+        if (Notifier is not null)
+        {
+            var changeArgs = new ModelFormArgsInternal(PropertyInfo);
+            await Notifier(changeArgs);          
+        }
     }
 
     public string PropertyValue
@@ -165,7 +168,7 @@ else
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name = "LabelForPropertyFunc")]
-    public Func<string, string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string, string>? LabelForPropertyFunc { get; set; } = null;
 
     private string GetLabel()
     {

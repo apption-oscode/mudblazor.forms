@@ -1,6 +1,5 @@
 using MudForms.Documentation.Data;
 using MudForms.Documentation.Samples;
-using Elemental.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +31,6 @@ namespace MudForms.Documentation
             //services.AddScoped<Elemental.Services.NotifierService>();
 
             //Use in downloading
-            services.AddElemental();
             services.AddLogging();
             services.AddMudServices();
         }

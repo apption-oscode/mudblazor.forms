@@ -14,8 +14,11 @@
         HelperText="@_fieldNotes" />
 
 @code {
-    [Parameter]
-    public System.Reflection.PropertyInfo PropertyInfo { get; set; }
+    [Parameter, EditorRequired]
+    public System.Reflection.PropertyInfo PropertyInfo { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public object Instance { get; set; } = default!;
 
     //[Parameter]
     //public EventCallback<ModelFormChangeArgs> ValueChanged { get; set; }
@@ -24,9 +27,6 @@
     /// There are two major layout options. Standard has line based with label / field and compact has a tabular layout with CSS flex.
     /// </summary>
     [Parameter] public ModelFormStyle ModelFormStyle { get; set; }
-
-    [Parameter]
-    public object Instance { get; set; }
 
     [CascadingParameter(Name = "Variant")]
     public Variant Variant { get; set; }
@@ -61,7 +61,7 @@
     {
         valueChangedCallback = EventCallback.Factory.Create<object>(this, s => OnValueChanged(s));
         _fieldNotes = MudModelFormTools.GetFieldNote(ModelFormContext, PropertyInfo);
-
+        await Task.CompletedTask;
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -77,21 +77,24 @@
 
     private async Task OnValueChanged(object value)
     {
-        var changeArgs = new ModelFormArgsInternal() { PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) };
-        await Notifier(changeArgs);
+        if (Notifier is not null)
+        {
+            var changeArgs = new ModelFormArgsInternal(PropertyInfo);
+            await Notifier(changeArgs);
+        }
     }
 
     /// <summary>
     /// Text that will be displayed for the Cancel button. Will be null and hidden by default.
     /// </summary>
     [CascadingParameter(Name = "LabelForPropertyFunc")]
-    public Func<string, string> LabelForPropertyFunc { get; set; } = null;
+    public Func<string, string>? LabelForPropertyFunc { get; set; } = null;
 
     [CascadingParameter(Name = "ModelFormContext")]
-    public ModelFormContext<U> ModelFormContext { get; set; } = null;
+    public ModelFormContext<U>? ModelFormContext { get; set; } = null;
 
     [CascadingParameter(Name = "Notifier")]
-    public Func<ModelFormArgsInternal, Task> Notifier { get; set; }
+    public Func<ModelFormArgsInternal, Task>? Notifier { get; set; }
 
     private string GetLabel()
     {
@@ -100,7 +103,10 @@
 
     private async Task UpdateModel()
     {
-        await Notifier(new ModelFormArgsInternal() { PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) });
+        if (Notifier is not null)
+        {
+            await Notifier(new ModelFormArgsInternal(PropertyInfo));
+        }
         //await OnChangeCallback.InvokeAsync(new ModelFormChangeArgs() { Context = ModelFormContext<T>, PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) });
         //OnChangeCallback.InvokeAsync(null).GetAwaiter().GetResult();
         // return ValueChanged.InvokeAsync(new ModelFormChangeArgs() { Context = ModelFormContext<T>, PropertyInfo = PropertyInfo, EditContext = new EditContext(PropertyInfo) });

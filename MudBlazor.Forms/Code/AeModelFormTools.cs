@@ -89,7 +89,7 @@ namespace MudBlazor.Forms
                 return prop.GetValue(instance) as T?;
             }
 
-            return (T)prop.GetValue(instance);
+            return (T)prop.GetValue(instance)!;
         }
 
         public static bool IsRequired(PropertyInfo propertyInfo)
@@ -133,14 +133,14 @@ namespace MudBlazor.Forms
                    && ((Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)!).IsPasswordField;
         }
 
-        public static string GetLabel(PropertyInfo propertyInfo, Func<string, string> labelFunc, bool includeOptional = true)
+        public static string GetLabel(PropertyInfo propertyInfo, Func<string, string>? labelFunc, bool includeOptional = true)
         {
             var label = Attribute.IsDefined(propertyInfo, typeof(MudFormAttribute))
                 ? (Attribute.GetCustomAttribute(propertyInfo, typeof(MudFormAttribute)) as MudFormAttribute)?.Label
                 : null;
             if (label is null)
             {
-                if (!(labelFunc is null))
+                if (labelFunc is not null)
                 {
                     label = labelFunc(propertyInfo.Name);
                 }
@@ -157,7 +157,7 @@ namespace MudBlazor.Forms
             return type.GetProperties().Where(p => !Attribute.IsDefined(p, typeof(AeFormIgnoreAttribute))).ToList();
         }
 
-        public static List<(string category, List<List<PropertyInfo>> properties)> GetMudModelFormCategories(this Type type)
+        public static List<(string? category, List<List<PropertyInfo>> properties)> GetMudModelFormCategories(this Type type)
         {
             var allProps = GetAeModelProperties(type);
             var propsNoCat = allProps.Where(p => !Attribute.IsDefined(p, typeof(AeFormCategoryAttribute)))
@@ -165,11 +165,12 @@ namespace MudBlazor.Forms
                                      .OrderBy(tp => tp.Key)
                                      .Select(g => g.OrderBy(tp => GetColumn(tp)).Select(tp => tp).ToList()).ToList();
 
-            var result = new List<(string category, List<List<PropertyInfo>> properties)> { (null, propsNoCat) };
+            var result = new List<(string? category, List<List<PropertyInfo>> properties)> { (null, propsNoCat) };
+
             result.AddRange(allProps.Where(p => Attribute.IsDefined(p, typeof(AeFormCategoryAttribute)))
-                .Select(property => (((Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute).Category,
-                (Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute).CategoryOrder),
-                property))
+                .Select(property => (((Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute)?.Category,
+                    (Attribute.GetCustomAttribute(property, typeof(AeFormCategoryAttribute)) as AeFormCategoryAttribute)?.CategoryOrder),
+                    property))
                 .GroupBy(p => p.Item1)
                 .OrderBy(gp => gp.Key.CategoryOrder)
                 .Select(gp => (gp.Key.Category, gp.Select(tp => tp.property)
@@ -281,7 +282,7 @@ namespace MudBlazor.Forms
                    DateTimeTypes.Contains(Nullable.GetUnderlyingType(type));
         }
 
-        public static string GetFieldNote(IModelFormContext modelFormContext, PropertyInfo propertyInfo)
+        public static string GetFieldNote(IModelFormContext? modelFormContext, PropertyInfo propertyInfo)
         {
             if (modelFormContext != null && !string.IsNullOrEmpty(modelFormContext.GetFieldNote(propertyInfo)))
             {
