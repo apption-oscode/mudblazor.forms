@@ -8,7 +8,6 @@
 		<PackageId>Ae.MudBlazor.Forms</PackageId>
 		<VersionPrefix>1.0.0</VersionPrefix>
 		<Nullable>enable</Nullable>
-		<LangVersion>preview</LangVersion>
 		<Authors>Apption</Authors>
 		<Company>Apption</Company>
 		<Product>MudBlazor Model Form</Product>
