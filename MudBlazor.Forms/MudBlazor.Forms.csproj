@@ -6,6 +6,7 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageId>Ae.MudBlazor.Forms</PackageId>
+		<VersionPrefix>1.0.0</VersionPrefix>
 		<Nullable>enable</Nullable>
 		<LangVersion>preview</LangVersion>
 		<Authors>Apption</Authors>
@@ -25,10 +26,14 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<Title>AElemental Model Form for MudBlazor</Title>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="..\README.md" Link="README.md" />
+	  <None Include="..\README.md" Link="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
   <ItemGroup>
