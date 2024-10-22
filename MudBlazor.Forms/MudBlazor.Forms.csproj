@@ -30,6 +30,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<!-- Required if your repository is on GitHub -->
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.*" PrivateAssets="All"/>
+
+		<!-- Required if your repository is on VSTS -->
+		<!--<PackageReference Include="Microsoft.SourceLink.Vsts.Git" Version="1.0.0-*" PrivateAssets="All"/>-->
+
+		<!-- Required if your repository is on GitLab -->
+		<!--<PackageReference Include="Microsoft.SourceLink.GitLab" Version="1.0.0-*" PrivateAssets="All"/>-->
+	</ItemGroup>	
+	
+	<ItemGroup>
 	  <None Include="..\README.md" Link="README.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
